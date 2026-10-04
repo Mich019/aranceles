@@ -1,84 +1,85 @@
-import { useEffect, useState } from 'react';
-import { Activity, CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
+import React, { useState } from 'react';
+import SkeuomorphicPanel from './components/SkeuomorphicPanel';
+import LoginForm from './components/LoginForm';
+import RecoveryForm from './components/RecoveryForm';
+import DashboardContextPanel from './components/DashboardContextPanel';
+import { LayoutDashboard, Lock } from 'lucide-react';
 
 export default function App() {
-  const [status, setStatus] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [mode, setMode] = useState('LOGIN'); // 'LOGIN' | 'RECOVERY' | 'AUTHENTICATED'
+  const [userSession, setUserSession] = useState(null);
 
-  const checkBackendHealth = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch('http://localhost:4000/api/health');
-      if (!response.ok) throw new Error('Error al conectar con la API');
-      const data = await response.json();
-      setStatus(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+  const handleLoginSuccess = (user) => {
+    setUserSession(user);
+    setMode('AUTHENTICATED');
   };
 
-  useEffect(() => {
-    checkBackendHealth();
-  }, []);
+  const handleLogout = () => {
+    setUserSession(null);
+    setMode('LOGIN');
+  };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col items-center justify-center p-6">
-      <div className="max-w-md w-full bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-6 space-y-6">
-        <div className="flex items-center justify-between border-b border-slate-700 pb-4">
-          <div className="flex items-center space-x-2">
-            <Activity className="w-6 h-6 text-indigo-400" />
-            <h1 className="text-xl font-bold tracking-wide">Sistema Aranceles</h1>
-          </div>
-          <button 
-            onClick={checkBackendHealth}
-            className="p-2 hover:bg-slate-700 rounded-lg transition-colors text-slate-400 hover:text-white"
-            title="Revisar conexión"
+    <div className="min-h-screen bg-slate-100 text-slate-800 flex flex-col items-center justify-center p-4 sm:p-6 select-none">
+      {/* Top Preview Switcher Bar */}
+      <div className="w-full max-w-3xl mb-4 flex items-center justify-between text-xs font-semibold text-slate-600 bg-white p-2.5 rounded-xl border border-slate-200">
+        <span className="flex items-center gap-1.5 text-slate-700">
+          <LayoutDashboard className="w-4 h-4 text-blue-600" />
+          <span>Sistema Nacional de Aranceles</span>
+        </span>
+
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+          <button
+            type="button"
+            onClick={() => setMode('LOGIN')}
+            className={`px-3 py-1 rounded-md transition-all ${
+              mode === 'LOGIN' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
+            }`}
           >
-            <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
+            Formulario de Acceso
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (!userSession) {
+                setUserSession({ username: 'diego.ramirez@aranceles.gob.ec', timestamp: new Date().toLocaleTimeString() });
+              }
+              setMode('AUTHENTICATED');
+            }}
+            className={`px-3 py-1 rounded-md transition-all ${
+              mode === 'AUTHENTICATED' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            Tablero de Control
           </button>
         </div>
-
-        <div className="space-y-4">
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">
-            Estado de Conexión Backend
-          </h2>
-
-          {loading && (
-            <p className="text-slate-400 animate-pulse flex items-center gap-2">
-              Verificando servidor...
-            </p>
-          )}
-
-          {!loading && error && (
-            <div className="flex items-start gap-3 bg-red-950/50 border border-red-500/30 p-4 rounded-lg text-red-300">
-              <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
-              <div>
-                <p className="font-semibold text-sm">Sin conexión con la API</p>
-                <p className="text-xs text-red-400/80 mt-1">{error}</p>
-              </div>
-            </div>
-          )}
-
-          {!loading && status && (
-            <div className="flex items-start gap-3 bg-emerald-950/50 border border-emerald-500/30 p-4 rounded-lg text-emerald-300">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-              <div className="space-y-1">
-                <p className="font-semibold text-sm">{status.message}</p>
-                <p className="text-xs text-emerald-400/80">
-                  Estado: <span className="uppercase font-mono">{status.status}</span>
-                </p>
-                <p className="text-xs text-slate-400 font-mono mt-1">
-                  {status.timestamp}
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
+
+      {/* Main View Render */}
+      <main className="w-full">
+        {mode === 'AUTHENTICATED' ? (
+          <DashboardContextPanel userSession={userSession} onLogout={handleLogout} />
+        ) : (
+          <SkeuomorphicPanel mode={mode} onTabChange={(newMode) => setMode(newMode)}>
+            {mode === 'LOGIN' && (
+              <LoginForm
+                onSwitchToRecovery={() => setMode('RECOVERY')}
+                onLoginSuccess={handleLoginSuccess}
+              />
+            )}
+
+            {mode === 'RECOVERY' && (
+              <RecoveryForm onBackToLogin={() => setMode('LOGIN')} />
+            )}
+          </SkeuomorphicPanel>
+        )}
+      </main>
+
+      {/* Production Footer Info */}
+      <footer className="mt-8 text-center text-xs font-normal text-slate-500 space-y-1">
+        <p>© 2026 República del Ecuador • Todos los derechos reservados</p>
+        <p className="text-[11px] text-slate-400">Sistema Nacional de Gestión y Control Arancelario</p>
+      </footer>
     </div>
   );
 }

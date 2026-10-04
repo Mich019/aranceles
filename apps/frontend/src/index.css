@@ -1,1 +1,83 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-page: #f1f5f9;
+    --card-bg: #ffffff;
+    --accent-blue: #2563eb;
+  }
+
+  body {
+    background-color: #f1f5f9;
+    color: #1e293b;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    user-select: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Modern Clean Flat/Minimalist Surface Utilities (No Heavy Shadows) */
+
+.clean-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.clean-input {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  transition: all 0.15s ease-in-out;
+}
+
+.clean-input:focus-within {
+  background: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.clean-input-error {
+  background: #fef2f2;
+  border-color: #ef4444;
+}
+
+.clean-button-primary {
+  background-color: #2563eb;
+  color: #ffffff;
+  transition: all 0.15s ease-in-out;
+}
+
+.clean-button-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.clean-button-primary:active {
+  background-color: #1e40af;
+}
+
+.clean-button-secondary {
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  transition: all 0.15s ease-in-out;
+}
+
+.clean-button-secondary:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.clean-tab-active {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.clean-tab-inactive {
+  background-color: transparent;
+  color: #64748b;
+}
+
+.clean-tab-inactive:hover {
+  color: #1e293b;
+  background-color: #f1f5f9;
+}
