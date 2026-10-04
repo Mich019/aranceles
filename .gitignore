@@ -1,0 +1,20 @@
+# Dependencias y paquetes
+node_modules/
+.pnpm-store/
+.pnpm-debug.log*
+
+# Archivos de compilación / build
+dist/
+build/
+
+# Archivos de entorno (contraseñas y credenciales)
+.env
+.env.local
+.env.production
+*.env
+
+# Archivos temporales e IDEs
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
