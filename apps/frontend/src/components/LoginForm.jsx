@@ -52,7 +52,7 @@ export default function LoginForm({
       )}
 
       {/* Credentials Inputs */}
-      <div className="space-y-3.5">
+      <div className="space-y-4">
         <RecessedInput
           id="username"
           label="Usuario o Correo Institucional"
@@ -83,11 +83,11 @@ export default function LoginForm({
         <button
           type="button"
           onClick={() => setRememberMe(!rememberMe)}
-          className="flex items-center gap-2 text-xs text-slate-600 font-medium select-none group"
+          className="flex items-center gap-2 text-xs text-slate-500 font-medium select-none group cursor-pointer"
         >
           <div
             className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${
-              rememberMe ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-300 bg-white'
+              rememberMe ? 'bg-[#2563eb] border-[#2563eb] text-white' : 'border-slate-300 bg-white'
             }`}
           >
             <Check className="w-3 h-3 stroke-[3]" />
@@ -98,7 +98,7 @@ export default function LoginForm({
         <button
           type="button"
           onClick={onSwitchToRecovery}
-          className="text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline"
+          className="text-xs font-semibold text-[#2563eb] hover:text-blue-700 hover:underline cursor-pointer"
         >
           ¿Olvidó su contraseña?
         </button>
@@ -107,9 +107,10 @@ export default function LoginForm({
       {/* Primary Submit Button */}
       <div className="pt-2">
         <SoftButton type="submit" loading={loading} icon={LogIn}>
-          Iniciar Sesión
+          Ingresar al Sistema
         </SoftButton>
       </div>
     </form>
   );
 }
+

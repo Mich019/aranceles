@@ -13,8 +13,8 @@ export default function SoftButton({
   className = '',
 }) {
   const variantStyles = {
-    primary: 'clean-button-primary font-semibold text-sm py-3 px-4 rounded-xl',
-    secondary: 'clean-button-secondary font-semibold text-sm py-3 px-4 rounded-xl',
+    primary: 'bg-[#2563eb] text-white shadow-none hover:opacity-90 font-semibold text-sm py-2.5 px-4 rounded-xl',
+    secondary: 'bg-white border border-slate-200 text-slate-700 shadow-none hover:bg-slate-50 font-semibold text-sm py-2.5 px-4 rounded-xl',
   };
 
   return (
@@ -22,7 +22,7 @@ export default function SoftButton({
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
-      className={`inline-flex items-center justify-center gap-2 transition-all select-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed ${
+      className={`inline-flex items-center justify-center gap-2 transition-opacity duration-150 select-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed ${
         fullWidth ? 'w-full' : ''
       } ${variantStyles[variant] || variantStyles.primary} ${className}`}
     >
@@ -40,3 +40,4 @@ export default function SoftButton({
     </button>
   );
 }
+

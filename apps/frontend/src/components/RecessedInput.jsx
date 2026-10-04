@@ -21,10 +21,10 @@ export default function RecessedInput({
       {label && (
         <label
           htmlFor={id}
-          className="flex items-center justify-between text-xs font-semibold text-slate-700 pl-0.5"
+          className="flex items-center justify-between text-sm font-medium text-slate-500"
         >
           <span>
-            {label} {required && <span className="text-blue-600">*</span>}
+            {label} {required && <span className="text-[#2563eb]">*</span>}
           </span>
           {error && (
             <span className="text-xs text-red-600 font-medium flex items-center gap-1">
@@ -35,14 +35,16 @@ export default function RecessedInput({
         </label>
       )}
 
-      {/* Clean Input Field */}
+      {/* Clean Vercel/Linear Input Field */}
       <div
-        className={`relative flex items-center w-full rounded-xl transition-all ${
-          error ? 'clean-input-error' : 'clean-input'
+        className={`relative flex items-center w-full rounded-xl border transition-all bg-[#f8fafc] ${
+          error
+            ? 'border-red-300 focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500'
+            : 'border-slate-200 focus-within:border-[#2563eb] focus-within:ring-1 focus-within:ring-[#2563eb]'
         }`}
       >
         {Icon && (
-          <div className="pl-3.5 pr-1.5 text-slate-400 flex items-center justify-center shrink-0">
+          <div className="pl-3.5 pr-1 text-slate-400 flex items-center justify-center shrink-0">
             <Icon className="w-4 h-4 text-slate-400" />
           </div>
         )}
@@ -56,7 +58,7 @@ export default function RecessedInput({
           placeholder={placeholder}
           required={required}
           autoComplete={autoComplete}
-          className="w-full py-3 pr-3 text-slate-800 font-medium text-sm bg-transparent placeholder-slate-400 focus:outline-none"
+          className="w-full py-2.5 px-3 text-slate-900 font-medium text-sm bg-transparent placeholder-slate-400 focus:outline-none focus:ring-0"
         />
 
         {type === 'password' && (
@@ -65,7 +67,7 @@ export default function RecessedInput({
             onClick={() => setShowPassword(!showPassword)}
             tabIndex={-1}
             title={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-            className="mr-3 p-1 rounded-lg text-slate-400 hover:text-slate-700 transition-colors"
+            className="mr-3 p-1 rounded-lg text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
           >
             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
@@ -74,3 +76,4 @@ export default function RecessedInput({
     </div>
   );
 }
+

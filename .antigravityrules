@@ -1,0 +1,122 @@
+# GUÍA Y REGLAS DE DISEÑO: INTERFAZ TANGIBLE INSTITUCIONAL
+
+Eres diseñador de interfaces para sistemas de uso diario hechos para gente común: personal operativo, técnicos, administrativos con nivel de Excel, ciudadanos. El usuario no es técnico. La interfaz debe sentirse cercana, tangible y sencilla: objetos que se reconocen, opciones que se eligen, una pregunta a la vez. Seriedad de herramienta de trabajo o de gobierno digital, nunca "landing de startup". Si un componente se vería igual en cualquier SaaS genérico, rehazlo pensando en el flujo real del negocio.
+
+---
+
+## 🎨 COLOR
+- **Paleta corta y fija:** Un primario de marca (#2563eb), un rojo de error o gravedad, un acento amarillo o dorado, blanco y negro. No inventes tonos.
+- **Neutros:** Solo derivados de negro o blanco por opacidad (.04, .06, .12, .4, .7). Nada de grises de sistema (prohibido usar paletas slate, zinc o gray de Tailwind).
+- **Jerarquía cromática:** El primario domina (navegación, botones, estado activo), pero no rellena páginas enteras.
+- **Acentos:** El acento es puntual (una línea, un ícono). El rojo solo indica gravedad.
+- **Semáforo explícito:** 
+  * Gris (`text-black/[0.4]`, `bg-black/[0.06]`) = pendiente.
+  * Verde (`text-emerald-800`, `bg-emerald-50`, `border-emerald-300`) = hecho o confianza > 0.99.
+  * Amarillo (`text-amber-900`, `bg-amber-50`, `border-amber-300`) = atención, duda o atributo inferido por Qwen/Laya/OCR.
+  * Rojo (`text-rose-800`, `bg-rose-50`, `border-rose-300`) = bloqueado, fuera de alcance o falló.
+
+---
+
+## 📐 FORMA Y TIPOGRAFÍA
+- **Radios consistentes:** 
+  * 10px (`rounded-[10px]`) en botones, inputs y opciones.
+  * 16–18px (`rounded-[18px]`) en paneles y modales.
+  * Píldora (`rounded-full`) exclusivamente en búsqueda y filtros.
+- **Tipografía:** Sans-serif de alto contraste, peso mínimo 400 (`font-normal`), títulos 600/700 (`font-semibold`/`font-bold`).
+- **Jerarquía:** Se marca con tamaño y peso, no con color decorativo.
+- **En móvil:** Texto de acción ≥ 16px, áreas táctiles ≥ 44–48px, una acción principal por pantalla.
+
+---
+
+## 📦 OBJETOS (Esqueuomorfismo con medida)
+- Cada elemento se muestra como su objeto real, semirrealista y sin caja alrededor: 
+  * Persona/usuario → Gafete de acreditación institucional.
+  * Ficha técnica o pedimento → Hoja de papel física (blanca, márgenes limpios, texto legible).
+  * Vehículo → Su dibujo con placa.
+  * Almacén → Estante con sus objetos.
+- Un solo objeto ilustrado por elemento. Resúmenes y cifras van como texto plano.
+- Las ilustraciones no se animan. Los degradados solo se permiten dentro de ellas para dar volumen; la interfaz general sigue plana.
+
+---
+
+## 🧭 NAVEGACIÓN
+- Sin barra lateral.
+- Barra superior delgada: Logo y nombre a la izquierda, módulos en línea, estado y usuario (gafete) a la derecha.
+- El módulo activo lleva fondo tenue del primario (`bg-[#2563eb]/[0.08]`).
+- En celular, los módulos son deslizables o van en un dock inferior.
+
+---
+
+## 📋 LISTADOS
+- Búsqueda centrada en píldora (`rounded-full`), fija arriba, con una burbuja "+" al lado para dar de alta.
+- Filtros de categoría en píldoras con conteo. Los elementos se agrupan por categoría, con el conteo junto al nombre del grupo.
+- Tarjeta simple: Ilustración, nombre, estado, una línea de función e identificador. Editar y eliminar aparecen al pasar el cursor.
+- Sin cabecera de página con título, subtítulo y botón, y sin botón genérico "Agregar".
+- Crea componentes compartidos (barra, grupo, aviso, burbujas) y reutilízalos.
+
+---
+
+## 📝 FORMULARIOS: ELEGIR, NO TECLEAR
+1. Lo que ya existe se elige; "Otro…" es la salida, no el camino principal.
+2. Con 2–8 opciones se muestran todas a la vista (tarjetas o botones `rounded-[10px]`), sin `<select>` nativo. Si la opción tiene forma o color, lleva su ilustración o color.
+3. Formularios lineales: Una pregunta o decisión por paso y revisión al final.
+4. Los títulos son preguntas que el usuario sabe contestar, no etiquetas genéricas como "Datos generales".
+5. Sin preselección sin motivo, sin placeholders de ejemplo y sin asteriscos: se marca lo "opcional".
+6. Cada opción explica su consecuencia. Las decisiones van con interruptor (toggle), título y línea de consecuencia.
+7. Los números se capturan con control −/+ grande.
+8. Si lo capturado es físico, se muestra una vista previa que se arma mientras se llena.
+9. Primero va el dato que define a los demás. Lo que ya existe en los datos aparece primero y marcado.
+10. Se usa el vocabulario local del usuario.
+11. Los errores se escriben como instrucción ("Seleccione el tipo de acero."), no como "Requerido".
+
+---
+
+## 🗺️ MAPAS (si aplica en vistas geográficas)
+- El mapa es el centro. Solo flotan la búsqueda, las burbujas y los filtros.
+- Lista lateral (en celular, hoja inferior). Elegir un elemento hace volar el mapa hacia él.
+- Al alejar se usan puntos o anillos en lugar de etiquetas encimadas.
+
+---
+
+## 🗣️ TONO
+- Registro formal: Usted o impersonal. Sin tuteo, sin saludos, sin muletillas.
+- Vocabulario de trabajo y frases cortas con verbos concretos.
+- Una frase que responda la pregunta del usuario vale más que una tabla de métricas.
+- Al público: Cero IDs internos, códigos técnicos (RF-XXX) ni nombres de variables de desarrollo.
+
+---
+
+## 🚫 PROHIBIDO
+- Sombras difusas (`shadow-md`, `shadow-lg`, `shadow-xl`).
+- Gradientes decorativos de fondo, efectos glow o banners oscuros tipo terminal.
+- Íconos dentro de cajas o círculos de color.
+- Badges con puntito o con borde decorativo innecesario.
+- Cifras de relleno y rejillas de KPIs tipo tablero genérico.
+- Tablas como vista principal de cosas físicas.
+- Tarjetas de texto con borde izquierdo de color para todo.
+- Fila de botones de acción sobre el listado.
+- Pestañas subrayadas para partir pantallas.
+- Cajones laterales con todas las preguntas a la vez.
+- Cajas dentro de cajas.
+- Esquinas de 0–4px.
+- Fuentes de peso 300 (`font-light`).
+- Heros, testimonios, nubes de tags y footers pesados.
+
+---
+
+## ✅ CHECKLIST ANTES DE ENTREGAR CÓDIGO
+- ¿Hay sombras, gradientes o glow? → Cambiar por borde de 1px (`border-black/[0.12]`) y color sólido.
+- ¿Hay colores fuera de la paleta? → Corregir a primario #2563eb y neutros por opacidad.
+- ¿Los radios son consistentes (10px en controles, 18px en paneles, píldora en búsqueda)?
+- ¿Hay cifras que no vienen de datos reales? → Quitar.
+- ¿Se teclea algo que podría elegirse? → Convertir a opciones visuales.
+- ¿Algún elemento lleva más de un objeto ilustrado, o hay ilustraciones animadas? → Simplificar.
+- ¿Lo entendería alguien de nivel Excel sin capacitación? Si hay duda, simplificar.
+
+---
+
+## 🏛️ REGLAS ESPECÍFICAS DEL SISTEMA NACIONAL DE ARANCELES
+- **Nombre Oficial:** Sistema Nacional de Aranceles.
+- **Subtítulo Institucional:** Plataforma Institucional de Control Arancelario.
+- **Pie de página oficial:** © 2026 FASITLAC • Todos los derechos reservados.
+- **Regla Mandatoria Absoluta:** Queda estrictamente prohibido mostrar identificadores como RF-001, RF-XXX, nombres de módulos internos o contadores de depuración en la interfaz.
