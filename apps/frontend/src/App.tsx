@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import AppShell, { DatosSimulados } from './components/layout/AppShell';
 import LoginView from './components/auth/LoginView';
 import IngestaView from './components/workflow/IngestaView';
+import VisorDocumento from './components/workflow/VisorDocumento';
+import FormularioAtributos from './components/workflow/FormularioAtributos';
+import PreguntaDecisiva from './components/workflow/PreguntaDecisiva';
+import RankingView from './components/workflow/RankingView';
+import AuditoriaPedimentoView, { ObservacionAuditoria } from './components/workflow/AuditoriaPedimentoView';
+import DictamenFinalView from './components/workflow/DictamenFinalView';
 
 export default function App() {
   // 1. Estado Reactivo Central (Simulado)
@@ -9,25 +15,29 @@ export default function App() {
   const [tipoDocumento, setTipoDocumento] = useState<'ficha' | 'pedimento'>('ficha');
   const [qwenActivo, setQwenActivo] = useState<boolean>(true);
   const [layaActivo, setLayaActivo] = useState<boolean>(true);
+  const [evidenciaHovered, setEvidenciaHovered] = useState<string | null>(null);
+  const [observacionAuditoria, setObservacionAuditoria] = useState<ObservacionAuditoria | null>(null);
 
   // Datos simulados de la ficha técnica de acero
   const [datosSimulados, setDatosSimulados] = useState<DatosSimulados>({
-    material: 'Acero aleado al boro',
-    tipoProducto: 'Barras laminadas en caliente de sección circular',
-    espesor: '12.5 mm',
-    norma: 'ASTM A514 Gr. B',
-    origen: 'Extracción OCR + Ficha Técnica PDF',
-    confianzaOcr: 0.992,
-    fraccionSugerida: '7228.30.00.00',
-    descripcionArancelaria: 'Barras de los demás aceros aleados; barras simplemente laminadas o extrudidas en caliente',
+    material: 'Lámina rolada en frío inox 304',
+    tipoProducto: 'Bobina laminada en frío',
+    espesor: '0.90 mm',
+    norma: 'ASTM A240 / Grado 304',
+    origen: 'Extracción Determinista + Ficha Técnica PDF',
+    confianzaOcr: 0.996,
+    fraccionSugerida: '7219.34.01 — NICO 01',
+    descripcionArancelaria:
+      'Productos laminados planos de acero inoxidable, de anchura superior o igual a 600 mm, simplemente laminados en frío, de espesor superior a 0.5 mm pero inferior a 1 mm.',
     pesoNeto: '24,500 kg',
     unidadMedida: 'Kilogramo (kg)',
-    paisOrigen: 'Alemania',
+    paisOrigen: 'México',
   });
 
   const reiniciarFlujo = () => {
     setPasoActual(0);
     setTipoDocumento('ficha');
+    setObservacionAuditoria(null);
   };
 
   return (
@@ -66,7 +76,7 @@ export default function App() {
                 espesor: '1.5 mm',
                 norma: 'ASTM A240 / Grado 304',
                 origen: 'Pedimento Aduanal de Importación (SHA-256 Validado)',
-                fraccionSugerida: '7219.34.00.00',
+                fraccionSugerida: '7219.34.01',
                 descripcionArancelaria:
                   'Productos laminados planos de acero inoxidable, de anchura superior o igual a 600 mm, simplemente laminados en frío, de espesor superior a 1 mm pero inferior a 3 mm',
               }));
@@ -79,7 +89,7 @@ export default function App() {
                 espesor: '1.5 mm',
                 norma: 'ASTM A240',
                 origen: 'Ficha Técnica de Fabricante (SHA-256 Validado)',
-                fraccionSugerida: '7219.34.00.00',
+                fraccionSugerida: '7219.34.01',
                 descripcionArancelaria:
                   'Productos laminados planos de acero inoxidable, de anchura superior o igual a 600 mm, simplemente laminados en frío',
               }));
@@ -95,7 +105,7 @@ export default function App() {
                 espesor: datos.espesor || '1.5 mm',
                 origen: 'Captura Manual Guiada (Excepción OCR)',
                 confianzaOcr: 0.999,
-                fraccionSugerida: '7219.34.00.00',
+                fraccionSugerida: '7219.34.01',
               }));
               setPasoActual(2);
             } else if (tipoExcepcion === 'fuera_alcance') {
@@ -118,7 +128,7 @@ export default function App() {
                 espesor: '1.5 mm',
                 norma: 'ASTM A240',
                 origen: 'Precedente Aprobado (Dictamen 2026-0142)',
-                fraccionSugerida: '7219.34.00.00',
+                fraccionSugerida: '7219.34.01',
                 descripcionArancelaria:
                   'Productos laminados planos de acero inoxidable, simplemente laminados en frío',
               }));
@@ -128,310 +138,155 @@ export default function App() {
         />
       )}
 
-      {/* VISTA 2: VALIDACIÓN DE ATRIBUTOS TÉCNICOS */}
+      {/* VISTA 2: VALIDACIÓN DE ATRIBUTOS TÉCNICOS (DISTRIBUCIÓN 45% VISOR / 55% ATRIBUTOS) */}
       {pasoActual === 2 && (
-        <div className="max-w-4xl mx-auto space-y-6">
-          <div className="bg-white border border-black/[0.12] rounded-[18px] p-6 sm:p-8">
-            <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-              <div>
-                <h2 className="text-base sm:text-lg font-semibold text-black">
-                  Validación de Atributos Extraídos
-                </h2>
-                <p className="text-xs text-black/[0.4] mt-1">
-                  Confirme los datos técnicos antes de realizar la clasificación arancelaria.
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-emerald-800 bg-emerald-50 border border-emerald-300 px-3 py-1.5 rounded-[10px]">
-                  Confianza OCR: {(datosSimulados.confianzaOcr * 100).toFixed(1)}%
-                </span>
-              </div>
+        <div className="max-w-7xl mx-auto space-y-4">
+          
+          {/* Encabezado de la etapa */}
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-white border border-black/[0.12] rounded-[14px] px-5 py-3">
+            <div>
+              <h2 className="text-sm sm:text-base font-bold text-black leading-tight">
+                Validación de Atributos Extraídos
+              </h2>
+              <p className="text-xs text-black/[0.4] mt-0.5">
+                Pase el cursor sobre los datos o la ficha física para verificar la evidencia de extracción.
+              </p>
             </div>
-
-            {/* Hoja física tangible de datos */}
-            <div className="bg-white border border-black/[0.12] rounded-[10px] p-6 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-medium text-black/[0.7] mb-1">
-                    Material declarado
-                  </label>
-                  <div className="p-2.5 bg-black/[0.02] border border-black/[0.12] rounded-[10px] text-xs font-semibold text-black flex items-center justify-between">
-                    <span>{datosSimulados.material}</span>
-                    <span className="text-[10px] text-emerald-800 font-normal">Verificado</span>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-black/[0.7] mb-1">
-                    Tipo de producto / forma
-                  </label>
-                  <div className="p-2.5 bg-black/[0.02] border border-black/[0.12] rounded-[10px] text-xs font-semibold text-black flex items-center justify-between">
-                    <span>{datosSimulados.tipoProducto}</span>
-                    <span className="text-[10px] text-emerald-800 font-normal">Normalizado (Qwen)</span>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-black/[0.7] mb-1">
-                    Espesor / Dimensión
-                  </label>
-                  <div className="p-2.5 bg-black/[0.02] border border-black/[0.12] rounded-[10px] text-xs font-semibold text-black flex items-center justify-between">
-                    <span>{datosSimulados.espesor}</span>
-                    <span className="text-[10px] text-emerald-800 font-normal">Conforme</span>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-black/[0.7] mb-1">
-                    Norma técnica internacional
-                  </label>
-                  <div className="p-2.5 bg-black/[0.02] border border-black/[0.12] rounded-[10px] text-xs font-semibold text-black flex items-center justify-between">
-                    <span>{datosSimulados.norma}</span>
-                    <span className="text-[10px] text-emerald-800 font-normal">Vigente</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-black/[0.06] flex items-center justify-between text-xs text-black/[0.6]">
-                <span>Origen de datos: {datosSimulados.origen}</span>
-                <span>País de origen: {datosSimulados.paisOrigen}</span>
-              </div>
-            </div>
-
-            {/* Acciones de paso */}
-            <div className="mt-6 flex items-center justify-between pt-4 border-t border-black/[0.08]">
-              <button
-                type="button"
-                onClick={() => setPasoActual(1)}
-                className="px-4 py-2 border border-black/[0.12] hover:border-black/[0.3] text-black text-xs font-medium rounded-[10px] transition-colors"
-              >
-                ← Volver a Ingesta
-              </button>
-              <button
-                type="button"
-                onClick={() => setPasoActual(3)}
-                className="px-5 py-2.5 bg-[#2563eb] text-white text-xs font-medium rounded-[10px] hover:opacity-90 transition-opacity"
-              >
-                Confirmar y Pasar a Evaluación →
-              </button>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-300 px-3 py-1 rounded-[10px]">
+                Densidad OCR Óptima: {(datosSimulados.confianzaOcr * 100).toFixed(1)}%
+              </span>
             </div>
           </div>
+
+          {/* Grid de 2 Columnas: 45% Izquierdo (Visor de Hoja Física) y 55% Derecho (Atributos) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+            
+            {/* 45% IZQUIERDO: VISOR DE LA HOJA TÉCNICA FÍSICA */}
+            <div className="lg:col-span-5 h-[680px]">
+              <VisorDocumento
+                nombreArchivo="Ficha_Tecnica_Aceros_304.pdf"
+                highlightedField={evidenciaHovered}
+                onHoverEvidence={setEvidenciaHovered}
+              />
+            </div>
+
+            {/* 55% DERECHO: PANEL DE ATRIBUTOS TÉCNICOS EXTRACTADOS */}
+            <div className="lg:col-span-7">
+              <FormularioAtributos
+                highlightedField={evidenciaHovered}
+                onHoverField={setEvidenciaHovered}
+                qwenActivo={qwenActivo}
+                layaActivo={layaActivo}
+                onVolver={() => setPasoActual(1)}
+                onConfirmar={(atributos) => {
+                  setDatosSimulados((prev) => ({
+                    ...prev,
+                    material: atributos.material,
+                    tipoProducto: atributos.forma,
+                    espesor: `${atributos.espesor.toFixed(2)} mm`,
+                    norma: atributos.norma,
+                  }));
+                  setPasoActual(3);
+                }}
+              />
+            </div>
+
+          </div>
+
         </div>
       )}
 
-      {/* VISTA 3: PREGUNTA DECISIVA (FORMULARIO: ELEGIR, NO TECLEAR) */}
+      {/* VISTA 3: PREGUNTA DECISIVA (DESAMBIGUACIÓN ARANCELARIA) */}
       {pasoActual === 3 && (
-        <div className="max-w-3xl mx-auto space-y-6">
-          <div className="bg-white border border-black/[0.12] rounded-[18px] p-6 sm:p-8">
-            <div className="mb-6">
-              <span className="text-[11px] font-semibold text-[#2563eb] uppercase tracking-wider">
-                Pregunta de Clasificación
-              </span>
-              <h2 className="text-base sm:text-lg font-semibold text-black mt-1">
-                ¿El proceso de conformado de las barras incluye deformación plástica en frío posterior?
-              </h2>
-              <p className="text-xs text-black/[0.4] mt-1">
-                Esta distinción determina la subpartida arancelaria correspondiente en el Capítulo 72.
-              </p>
-            </div>
-
-            {/* Opciones con consecuencias directas */}
-            <div className="space-y-3 mb-6">
-              <button
-                type="button"
-                onClick={() => setPasoActual(4)}
-                className="w-full p-4 rounded-[10px] border border-black/[0.12] hover:border-[#2563eb] bg-white text-left transition-all group"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="font-semibold text-sm text-black group-hover:text-[#2563eb]">
-                    No, son simplemente laminadas o extruidas en caliente
-                  </div>
-                  <span className="text-xs text-black/[0.4]">Subpartida 7228.30</span>
-                </div>
-                <div className="text-xs text-black/[0.6] mt-1">
-                  Consecuencia: Aplica arancel base del 0% según acuerdo de asociación con la UE.
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPasoActual(4)}
-                className="w-full p-4 rounded-[10px] border border-black/[0.12] hover:border-[#2563eb] bg-white text-left transition-all group"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="font-semibold text-sm text-black group-hover:text-[#2563eb]">
-                    Sí, tienen acabado o conformado en frío
-                  </div>
-                  <span className="text-xs text-black/[0.4]">Subpartida 7228.50</span>
-                </div>
-                <div className="text-xs text-black/[0.6] mt-1">
-                  Consecuencia: Requiere certificado adicional de tolerancias dimensionales.
-                </div>
-              </button>
-            </div>
-
-            <div className="flex items-center justify-between pt-4 border-t border-black/[0.08]">
-              <button
-                type="button"
-                onClick={() => setPasoActual(2)}
-                className="px-4 py-2 border border-black/[0.12] text-black text-xs font-medium rounded-[10px]"
-              >
-                ← Volver a Validación
-              </button>
-            </div>
-          </div>
-        </div>
+        <PreguntaDecisiva
+          confianzaActual={datosSimulados.confianzaOcr < 0.99 ? datosSimulados.confianzaOcr : 0.865}
+          onVolver={() => setPasoActual(2)}
+          onRespuestaRegistrada={(respuesta) => {
+            setDatosSimulados((prev) => ({
+              ...prev,
+              fraccionSugerida: respuesta.subpartidaEfecto,
+              confianzaOcr: respuesta.nuevaConfianza,
+              descripcionArancelaria:
+                respuesta.id === 'enrollado'
+                  ? 'Productos laminados planos de acero inoxidable, de anchura superior o igual a 600 mm, simplemente laminados en frío, de espesor superior a 0.5 mm pero inferior o igual a 1 mm (en bobinas)'
+                  : respuesta.id === 'hojas_cortadas'
+                  ? 'Los demás productos laminados planos de acero inoxidable, de anchura superior o igual a 600 mm, cortados en hojas'
+                  : 'Productos laminados planos de acero inoxidable (clasificación residual)',
+            }));
+            setPasoActual(4);
+          }}
+        />
       )}
 
       {/* VISTA 4: DICTAMEN / RANKING ARANCELARIO */}
       {pasoActual === 4 && (
-        <div className="max-w-3xl mx-auto space-y-6">
-          <div className="bg-white border border-black/[0.12] rounded-[18px] p-6 sm:p-8">
-            <div className="mb-6">
-              <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-300 px-2.5 py-1 rounded-[10px]">
-                Dictamen Técnico Determinado
-              </span>
-              <h2 className="text-base sm:text-lg font-semibold text-black mt-3">
-                Fracción Arancelaria Determinada
-              </h2>
-              <div className="mt-2 p-4 bg-black/[0.02] border border-black/[0.12] rounded-[10px]">
-                <div className="text-2xl font-bold text-[#2563eb] font-mono">
-                  {datosSimulados.fraccionSugerida}
-                </div>
-                <p className="text-xs text-black/[0.7] mt-1">
-                  {datosSimulados.descripcionArancelaria}
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-2 text-xs text-black/[0.7] mb-6">
-              <div className="flex justify-between py-1.5 border-b border-black/[0.06]">
-                <span>Fundamento Legal:</span>
-                <span className="font-semibold text-black">Reglas Generales 1 y 6 de la Nomenclatura</span>
-              </div>
-              <div className="flex justify-between py-1.5 border-b border-black/[0.06]">
-                <span>Arancel Ad-Valorem:</span>
-                <span className="font-semibold text-black">0.0 %</span>
-              </div>
-              <div className="flex justify-between py-1.5 border-b border-black/[0.06]">
-                <span>Restricciones No Arancelarias:</span>
-                <span className="font-semibold text-emerald-800">Ninguna requerida</span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between pt-4 border-t border-black/[0.08]">
-              <button
-                type="button"
-                onClick={() => setPasoActual(3)}
-                className="px-4 py-2 border border-black/[0.12] text-black text-xs font-medium rounded-[10px]"
-              >
-                ← Reevaluar
-              </button>
-              <button
-                type="button"
-                onClick={() => setPasoActual(5)}
-                className="px-5 py-2.5 bg-[#2563eb] text-white text-xs font-medium rounded-[10px] hover:opacity-90"
-              >
-                Ver Auditoría de Pedimento →
-              </button>
-            </div>
-          </div>
-        </div>
+        <RankingView
+          fraccion={
+            datosSimulados.fraccionSugerida.includes('NICO')
+              ? datosSimulados.fraccionSugerida
+              : `${datosSimulados.fraccionSugerida} — NICO 01`
+          }
+          confianza={datosSimulados.confianzaOcr > 0.95 ? datosSimulados.confianzaOcr : 0.996}
+          onVolver={() => setPasoActual(3)}
+          onAprobar={(datos) => {
+            setDatosSimulados((prev) => ({
+              ...prev,
+              fraccionSugerida: datos.fraccion,
+              confianzaOcr: datos.confianza,
+            }));
+            setPasoActual(5);
+          }}
+          onCorregirManual={(motivo, fraccionCorregida) => {
+            setDatosSimulados((prev) => ({
+              ...prev,
+              fraccionSugerida: fraccionCorregida,
+              confianzaOcr: 1.0,
+            }));
+            setPasoActual(5);
+          }}
+        />
       )}
 
       {/* VISTA 5: AUDITORÍA DE PEDIMENTO */}
       {pasoActual === 5 && (
-        <div className="max-w-4xl mx-auto space-y-6">
-          <div className="bg-white border border-black/[0.12] rounded-[18px] p-6 sm:p-8">
-            <div className="mb-6">
-              <h2 className="text-base sm:text-lg font-semibold text-black">
-                Auditoría Cruzada: Pedimento vs. Ficha Técnica
-              </h2>
-              <p className="text-xs text-black/[0.4] mt-1">
-                Contraste directo entre los datos de la declaración y el dictamen técnico.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="p-4 border border-black/[0.12] rounded-[10px] bg-white">
-                <div className="text-xs font-semibold text-black/[0.6] mb-2 uppercase tracking-wide">
-                  Declarado en Pedimento
-                </div>
-                <div className="text-sm font-mono font-bold text-black">7228.30.00.00</div>
-                <div className="text-xs text-black/[0.6] mt-1">Barras de acero aleado laminadas en caliente</div>
-              </div>
-
-              <div className="p-4 border border-emerald-300 rounded-[10px] bg-emerald-50/[0.5]">
-                <div className="text-xs font-semibold text-emerald-800 mb-2 uppercase tracking-wide">
-                  Resultado de Evaluación Técnica
-                </div>
-                <div className="text-sm font-mono font-bold text-emerald-900">7228.30.00.00</div>
-                <div className="text-xs text-emerald-800 mt-1">Coincidencia exacta sin discrepancias arancelarias</div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between pt-4 border-t border-black/[0.08]">
-              <button
-                type="button"
-                onClick={() => setPasoActual(4)}
-                className="px-4 py-2 border border-black/[0.12] text-black text-xs font-medium rounded-[10px]"
-              >
-                ← Volver a Dictamen
-              </button>
-              <button
-                type="button"
-                onClick={() => setPasoActual(6)}
-                className="px-5 py-2.5 bg-[#2563eb] text-white text-xs font-medium rounded-[10px] hover:opacity-90"
-              >
-                Generar Expediente Final →
-              </button>
-            </div>
-          </div>
-        </div>
+        <AuditoriaPedimentoView
+          fraccionMotor={datosSimulados.fraccionSugerida}
+          onVolver={() => setPasoActual(4)}
+          onConfirmarConformidad={() => {
+            setObservacionAuditoria(null);
+            setPasoActual(6);
+          }}
+          onEmitirObservacion={(observacion) => {
+            setObservacionAuditoria(observacion);
+            setPasoActual(6);
+          }}
+        />
       )}
 
-      {/* VISTA 6: EXPEDIENTE FINAL */}
+      {/* VISTA 6: DICTAMEN FINAL Y EXPEDIENTE CERTIFICADO */}
       {pasoActual === 6 && (
-        <div className="max-w-3xl mx-auto space-y-6">
-          <div className="bg-white border border-black/[0.12] rounded-[18px] p-6 sm:p-8 text-center">
-            {/* Hoja física tangible de expediente */}
-            <div className="w-16 h-20 mx-auto bg-white border border-black/[0.15] rounded-[6px] flex flex-col p-2.5 justify-between mb-4 shadow-none">
-              <div className="w-6 h-1 bg-[#2563eb] rounded" />
-              <div className="space-y-1">
-                <div className="w-full h-0.5 bg-black/[0.2]" />
-                <div className="w-full h-0.5 bg-black/[0.2]" />
-                <div className="w-3/4 h-0.5 bg-black/[0.2]" />
-              </div>
-              <div className="w-4 h-4 rounded-full bg-emerald-100 border border-emerald-300 mx-auto flex items-center justify-center text-[8px] text-emerald-800 font-bold">
-                ✓
-              </div>
-            </div>
-
-            <h2 className="text-lg font-semibold text-black">
-              Expediente Arancelario Certificado
-            </h2>
-            <p className="text-xs text-black/[0.6] mt-1 max-w-md mx-auto">
-              El dictamen técnico para la mercancía <strong>{datosSimulados.material}</strong> ({datosSimulados.fraccionSugerida}) ha sido registrado con validez institucional.
-            </p>
-
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <button
-                type="button"
-                onClick={reiniciarFlujo}
-                className="px-5 py-2.5 bg-[#2563eb] text-white text-xs font-medium rounded-[10px] hover:opacity-90"
-              >
-                Iniciar Nueva Clasificación
-              </button>
-              <button
-                type="button"
-                onClick={() => setPasoActual(1)}
-                className="px-4 py-2.5 border border-black/[0.12] text-black text-xs font-medium rounded-[10px] hover:border-black/[0.3]"
-              >
-                Volver a Ingesta
-              </button>
-            </div>
-          </div>
-        </div>
+        <DictamenFinalView
+          idCaso="EXP-2026-0419-MX"
+          sha256="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          versionBaseLegal="LIGIE-72-73@2026"
+          fraccion={
+            datosSimulados.fraccionSugerida.includes('—')
+              ? datosSimulados.fraccionSugerida.split('—')[0].trim()
+              : datosSimulados.fraccionSugerida
+          }
+          nico={
+            datosSimulados.fraccionSugerida.includes('NICO')
+              ? datosSimulados.fraccionSugerida.split('NICO')[1]?.trim() || '01'
+              : '01'
+          }
+          descripcionLegal={datosSimulados.descripcionArancelaria}
+          mercancia={`${datosSimulados.material} (${datosSimulados.tipoProducto}, espesor ${datosSimulados.espesor})`}
+          firmante="Diego Ramírez (Clasificador Aduanal)"
+          observacionAuditoria={observacionAuditoria}
+          onNuevoDocumento={reiniciarFlujo}
+          onVolver={() => setPasoActual(5)}
+        />
       )}
     </AppShell>
   );

@@ -75,7 +75,7 @@ export const AppShell: React.FC<AppShellProps> = ({
           {/* Centro: Toggles Físicos Sobrios de Asistentes IA */}
           <div className="hidden lg:flex items-center gap-3">
             {/* Toggle Qwen 2.5 */}
-            <div className="flex items-center gap-2.5 bg-black/[0.02] border border-black/[0.12] rounded-[10px] px-3 py-1.5">
+            <div className="flex items-center gap-2.5 px-2 py-1.5">
               <button
                 type="button"
                 role="switch"
@@ -105,7 +105,7 @@ export const AppShell: React.FC<AppShellProps> = ({
             </div>
 
             {/* Toggle Laya */}
-            <div className="flex items-center gap-2.5 bg-black/[0.02] border border-black/[0.12] rounded-[10px] px-3 py-1.5">
+            <div className="flex items-center gap-2.5 px-2 py-1.5">
               <button
                 type="button"
                 role="switch"
@@ -138,30 +138,12 @@ export const AppShell: React.FC<AppShellProps> = ({
           {/* Lado Derecho: Gafete Tangible del Funcionario + Acción */}
           <div className="flex items-center gap-3">
             {/* Gafete institucional de acreditación */}
-            <div className="relative">
-              {/* Presilla o ranura física superior del gafete */}
-              <div className="w-5 h-1.5 bg-black/[0.2] rounded-t-sm mx-auto -mb-[1px] border-t border-x border-black/[0.25]" />
-              
-              <div className="bg-white border border-black/[0.12] rounded-[10px] px-3 py-1.5 flex items-center gap-2.5">
-                {/* Avatar fotográfico sobrio */}
-                <div className="w-8 h-8 rounded-full bg-black/[0.06] border border-black/[0.12] flex items-center justify-center font-bold text-xs text-black">
-                  DR
-                </div>
-
-                <div className="text-left">
-                  <div className="text-xs font-semibold text-black leading-tight">
-                    Diego Ramírez
-                  </div>
-                  <div className="text-[11px] text-black/[0.7] leading-tight">
-                    Clasificador Aduanal
-                  </div>
-                  <div className="flex items-center gap-1.5 mt-0.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 inline-block" />
-                    <span className="text-[10px] text-black/[0.4] leading-tight">
-                      Aduana Quito • En línea
-                    </span>
-                  </div>
-                </div>
+            <div className="text-right">
+              <div className="text-sm font-semibold text-black leading-tight">
+                Diego Ramírez
+              </div>
+              <div className="text-xs text-black/[0.7] leading-tight">
+                Clasificador Aduanal • Aduana de Nuevo Laredo
               </div>
             </div>
 
@@ -181,25 +163,19 @@ export const AppShell: React.FC<AppShellProps> = ({
           <button
             type="button"
             onClick={() => setQwenActivo((prev) => !prev)}
-            className={`text-xs px-2.5 py-1 rounded-[10px] border flex items-center gap-1.5 ${
-              qwenActivo
-                ? 'bg-black/[0.06] border-black/[0.2] text-black font-medium'
-                : 'bg-white border-black/[0.12] text-black/[0.4]'
+            className={`text-xs px-2.5 py-2 rounded-[10px] ${
+              qwenActivo ? 'bg-[#2563eb]/[0.08] text-[#2563eb] font-semibold' : 'text-black/[0.4]'
             }`}
           >
-            <span className={`w-2 h-2 rounded-full ${qwenActivo ? 'bg-[#2563eb]' : 'bg-black/[0.2]'}`} />
             Qwen 2.5: {qwenActivo ? 'Activo' : 'Inactivo'}
           </button>
           <button
             type="button"
             onClick={() => setLayaActivo((prev) => !prev)}
-            className={`text-xs px-2.5 py-1 rounded-[10px] border flex items-center gap-1.5 ${
-              layaActivo
-                ? 'bg-black/[0.06] border-black/[0.2] text-black font-medium'
-                : 'bg-white border-black/[0.12] text-black/[0.4]'
+            className={`text-xs px-2.5 py-2 rounded-[10px] ${
+              layaActivo ? 'bg-[#2563eb]/[0.08] text-[#2563eb] font-semibold' : 'text-black/[0.4]'
             }`}
           >
-            <span className={`w-2 h-2 rounded-full ${layaActivo ? 'bg-[#2563eb]' : 'bg-black/[0.2]'}`} />
             Laya: {layaActivo ? 'Activo' : 'Inactivo'}
           </button>
         </div>
@@ -222,17 +198,14 @@ export const AppShell: React.FC<AppShellProps> = ({
                     <button
                       type="button"
                       onClick={() => setPasoActual(etapa.id)}
-                      className={`px-3 py-1.5 rounded-[10px] text-xs transition-all flex items-center gap-2 border ${
+                      className={`px-3 py-2 rounded-[10px] text-xs transition-colors ${
                         esActivo
-                          ? 'bg-[#2563eb]/[0.08] text-[#2563eb] border-[#2563eb] font-semibold'
+                          ? 'bg-[#2563eb]/[0.08] text-[#2563eb] font-semibold'
                           : esCompletado
-                          ? 'text-emerald-800 bg-emerald-50 border-emerald-300 font-medium'
-                          : 'text-black/[0.4] bg-black/[0.02] border-black/[0.08] hover:border-black/[0.2]'
+                          ? 'text-black font-medium'
+                          : 'text-black/[0.4] hover:text-black/[0.7]'
                       }`}
                     >
-                      {esCompletado && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-700" />
-                      )}
                       <span>{etapa.label}</span>
                     </button>
 

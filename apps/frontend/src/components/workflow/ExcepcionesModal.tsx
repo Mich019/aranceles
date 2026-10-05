@@ -250,7 +250,7 @@ export const ExcepcionesModal: React.FC<ExcepcionesModalProps> = ({
               <div className="flex items-center justify-between pb-2 border-b border-black/[0.06]">
                 <span className="text-xs text-black/[0.6]">Fracción Previamente Asignada:</span>
                 <span className="font-mono text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-[4px] border border-emerald-300">
-                  7219.34.00.00
+                  7219.34.01
                 </span>
               </div>
 
@@ -267,7 +267,7 @@ export const ExcepcionesModal: React.FC<ExcepcionesModalProps> = ({
                 onClick={() =>
                   onResolver('confirmar_reuso', {
                     dictamenId: '2026-0142',
-                    fraccion: '7219.34.00.00',
+                    fraccion: '7219.34.01',
                   })
                 }
                 className="w-full sm:flex-1 py-3 px-4 bg-emerald-700 text-white font-semibold text-xs rounded-[10px] hover:bg-emerald-800 transition-colors"

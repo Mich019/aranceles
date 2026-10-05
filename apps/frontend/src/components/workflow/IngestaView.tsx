@@ -93,339 +93,226 @@ export const IngestaView: React.FC<IngestaViewProps> = ({
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       
-      {/* 1. METÁFORA TANGIBLE: LA CARPETA / HOJA RECEPTORA */}
-      <div className="bg-white border border-black/[0.12] rounded-[18px] p-6 sm:p-8">
-        
+      {/* 1. RECEPCIÓN DEL DOCUMENTO (sin tarjetas: secciones separadas por línea) */}
+      <div>
+
         {/* Encabezado instructivo */}
-        <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="w-2 h-2 rounded-full bg-[#2563eb]" />
-              <span className="text-[11px] font-semibold text-[#2563eb] uppercase tracking-wide">
-                Mesa de Entrada Digital
-              </span>
-            </div>
-            <h2 className="text-lg sm:text-xl font-bold text-black tracking-tight">
-              Seleccione o deposite el documento a clasificar
-            </h2>
-            <p className="text-xs text-black/[0.4] mt-1">
-              El archivo ingresará a extracción analítica y normalización ortográfica.
-            </p>
-          </div>
-
-          {/* Indicador de integridad criptográfica */}
-          <div className="bg-black/[0.02] border border-black/[0.12] rounded-[10px] px-3 py-1.5 text-right">
-            <span className="text-[10px] text-black/[0.4] block">Protocolo de Ingesta</span>
-            <span className="text-xs font-mono font-medium text-black">SHA-256 Validado</span>
-          </div>
-        </div>
-
-        {/* 2. SELECTOR DE TRÁMITE: INTERRUPTOR DOBLE */}
         <div className="mb-6">
-          <label className="block text-xs font-semibold text-black/[0.7] mb-2">
-            Tipo de trámite aduanero:
-          </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => setTipoDocumento('ficha')}
-              className={`p-3.5 rounded-[10px] border text-left transition-all ${
-                tipoDocumento === 'ficha'
-                  ? 'border-[#2563eb] bg-[#2563eb]/[0.05] ring-1 ring-[#2563eb]'
-                  : 'border-black/[0.12] bg-black/[0.01] hover:border-black/[0.25]'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                {/* Hoja física tangible */}
-                <div className="w-8 h-10 bg-white border border-black/[0.12] rounded-[4px] flex flex-col p-1 justify-between flex-shrink-0">
-                  <div className="w-4 h-1 bg-[#2563eb] rounded-xs" />
-                  <div className="space-y-0.5">
-                    <div className="w-full h-0.5 bg-black/[0.2]" />
-                    <div className="w-full h-0.5 bg-black/[0.2]" />
-                    <div className="w-2/3 h-0.5 bg-black/[0.2]" />
-                  </div>
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-black">
-                    Ficha Técnica de Fabricante
-                  </div>
-                  <div className="text-[11px] text-black/[0.6] mt-0.5">
-                    Extracción de composición, tolerancias y normas siderúrgicas.
-                  </div>
-                </div>
-              </div>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setTipoDocumento('pedimento')}
-              className={`p-3.5 rounded-[10px] border text-left transition-all ${
-                tipoDocumento === 'pedimento'
-                  ? 'border-[#2563eb] bg-[#2563eb]/[0.05] ring-1 ring-[#2563eb]'
-                  : 'border-black/[0.12] bg-black/[0.01] hover:border-black/[0.25]'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                {/* Pedimento físico tangible */}
-                <div className="w-8 h-10 bg-white border border-black/[0.12] rounded-[4px] flex flex-col p-1 justify-between flex-shrink-0">
-                  <div className="w-full h-1 bg-black/[0.3] rounded-xs" />
-                  <div className="space-y-0.5">
-                    <div className="w-full h-0.5 bg-black/[0.2]" />
-                    <div className="w-full h-0.5 bg-black/[0.2]" />
-                    <div className="w-1/2 h-0.5 bg-emerald-700" />
-                  </div>
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-black">
-                    Auditoría de Pedimento Aduanal
-                  </div>
-                  <div className="text-[11px] text-black/[0.6] mt-0.5">
-                    Contraste directo entre declaración formal y mercancía física.
-                  </div>
-                </div>
-              </div>
-            </button>
-          </div>
+          <h2 className="text-2xl font-bold text-black">
+            Seleccione o deposite el documento a clasificar
+          </h2>
+          <p className="text-sm text-black/[0.7] mt-1">
+            El archivo se revisa y se verifica su integridad antes de continuar.
+          </p>
         </div>
 
-        {/* 3. PARÁMETROS PREVIOS DE IDENTIFICACIÓN (OPCIONALES) */}
-        <div className="mb-6 p-4 bg-black/[0.02] border border-black/[0.12] rounded-[10px]">
-          <div className="text-xs font-semibold text-black/[0.7] mb-2 flex items-center justify-between">
-            <span>Parámetros de asociación con catálogo previo:</span>
-            <span className="text-[11px] font-normal text-black/[0.4]">Opcional</span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => {
-                setNumeroParteActivo('NP-ACERO-304-X');
-                setProveedorActivo('Aceros Mex S.A. de C.V.');
-              }}
-              className={`p-2.5 rounded-[10px] border text-left text-xs transition-colors ${
-                numeroParteActivo === 'NP-ACERO-304-X'
-                  ? 'border-[#2563eb] bg-white font-medium text-black'
-                  : 'border-black/[0.12] bg-black/[0.01] text-black/[0.7]'
-              }`}
-            >
-              <div className="font-mono text-[11px] text-[#2563eb] font-semibold">NP-ACERO-304-X</div>
-              <div className="text-[11px] text-black/[0.6] mt-0.5">Proveedor: Aceros Mex S.A. de C.V.</div>
-            </button>
+        {/* 2. TIPO DE TRÁMITE */}
+        <section className="border-t border-black/[0.12] py-5">
+          <h3 className="text-sm font-semibold text-black mb-2">¿Qué documento va a revisar?</h3>
+          <ul role="radiogroup" aria-label="Tipo de trámite">
+            {[
+              { id: 'ficha' as const, titulo: 'Ficha técnica de fabricante', linea: 'Se extraen composición, tolerancias y normas.' },
+              { id: 'pedimento' as const, titulo: 'Pedimento aduanal', linea: 'Se compara lo declarado contra la mercancía.' },
+            ].map((op) => {
+              const activo = tipoDocumento === op.id;
+              return (
+                <li key={op.id}>
+                  <button
+                    type="button"
+                    role="radio"
+                    aria-checked={activo}
+                    onClick={() => setTipoDocumento(op.id)}
+                    className={`w-full text-left flex items-center gap-3 px-3 py-3 min-h-[48px] rounded-[10px] transition-colors ${
+                      activo ? 'bg-[#2563eb]/[0.08]' : 'hover:bg-black/[0.04]'
+                    }`}
+                  >
+                    <span className={`w-4 h-4 rounded-full border-2 shrink-0 flex items-center justify-center ${activo ? 'border-[#2563eb]' : 'border-black/[0.4]'}`}>
+                      {activo && <span className="w-2 h-2 rounded-full bg-[#2563eb]" />}
+                    </span>
+                    <span>
+                      <span className="block text-sm font-semibold text-black">{op.titulo}</span>
+                      <span className="block text-xs text-black/[0.7]">{op.linea}</span>
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
 
-            <button
-              type="button"
-              onClick={() => {
-                setNumeroParteActivo('NP-BARRAS-7228-B');
-                setProveedorActivo('Siderúrgica del Sur C.A.');
-              }}
-              className={`p-2.5 rounded-[10px] border text-left text-xs transition-colors ${
-                numeroParteActivo === 'NP-BARRAS-7228-B'
-                  ? 'border-[#2563eb] bg-white font-medium text-black'
-                  : 'border-black/[0.12] bg-black/[0.01] text-black/[0.7]'
-              }`}
-            >
-              <div className="font-mono text-[11px] text-[#2563eb] font-semibold">NP-BARRAS-7228-B</div>
-              <div className="text-[11px] text-black/[0.6] mt-0.5">Proveedor: Siderúrgica del Sur C.A.</div>
-            </button>
-          </div>
-        </div>
+        {/* 3. NÚMERO DE PARTE (OPCIONAL) */}
+        <section className="border-t border-black/[0.12] py-5">
+          <h3 className="text-sm font-semibold text-black mb-2">
+            ¿El producto ya tiene número de parte? <span className="font-normal text-black/[0.4]">(opcional)</span>
+          </h3>
+          <ul role="radiogroup" aria-label="Número de parte">
+            {[
+              { np: 'NP-ACERO-304-X', prov: 'Aceros Mex S.A. de C.V.' },
+              { np: 'NP-BARRAS-7228-B', prov: 'Siderúrgica del Sur C.A.' },
+            ].map((op) => {
+              const activo = numeroParteActivo === op.np;
+              return (
+                <li key={op.np}>
+                  <button
+                    type="button"
+                    role="radio"
+                    aria-checked={activo}
+                    onClick={() => {
+                      setNumeroParteActivo(op.np);
+                      setProveedorActivo(op.prov);
+                    }}
+                    className={`w-full text-left flex items-center gap-3 px-3 py-3 min-h-[48px] rounded-[10px] transition-colors ${
+                      activo ? 'bg-[#2563eb]/[0.08]' : 'hover:bg-black/[0.04]'
+                    }`}
+                  >
+                    <span className={`w-4 h-4 rounded-full border-2 shrink-0 flex items-center justify-center ${activo ? 'border-[#2563eb]' : 'border-black/[0.4]'}`}>
+                      {activo && <span className="w-2 h-2 rounded-full bg-[#2563eb]" />}
+                    </span>
+                    <span className="text-sm text-black">
+                      <span className="font-mono font-semibold">{op.np}</span>
+                      <span className="text-black/[0.7]"> — Proveedor: {op.prov}</span>
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
 
-        {/* 4. SELECCIÓN DIRECTA DE FORMATO (SIN SELECTS) */}
-        <div className="mb-6">
-          <label className="block text-xs font-semibold text-black/[0.7] mb-2">
-            Formato de origen del archivo:
-          </label>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        {/* 4. FORMATO DEL ARCHIVO */}
+        <section className="border-t border-black/[0.12] py-5">
+          <h3 className="text-sm font-semibold text-black mb-2">¿En qué formato está el archivo?</h3>
+          <ul role="radiogroup" aria-label="Formato del archivo" className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
             {FORMATOS_DISPONIBLES.map((formato) => {
               const activo = formatoSeleccionado === formato.id;
               return (
-                <button
-                  key={formato.id}
-                  type="button"
-                  onClick={() => setFormatoSeleccionado(formato.id)}
-                  className={`p-3 rounded-[10px] border text-center transition-all ${
-                    activo
-                      ? 'border-[#2563eb] bg-[#2563eb]/[0.05] ring-1 ring-[#2563eb]'
-                      : 'border-black/[0.12] bg-white hover:border-black/[0.25]'
-                  }`}
-                >
-                  <div className="text-xs font-bold text-black">{formato.label}</div>
-                  <div className="text-[10px] font-mono text-black/[0.4] mt-0.5">{formato.ext}</div>
-                </button>
+                <li key={formato.id}>
+                  <button
+                    type="button"
+                    role="radio"
+                    aria-checked={activo}
+                    onClick={() => setFormatoSeleccionado(formato.id)}
+                    className={`w-full text-left flex items-center gap-3 px-3 py-3 min-h-[48px] rounded-[10px] transition-colors ${
+                      activo ? 'bg-[#2563eb]/[0.08]' : 'hover:bg-black/[0.04]'
+                    }`}
+                  >
+                    <span className={`w-4 h-4 rounded-full border-2 shrink-0 flex items-center justify-center ${activo ? 'border-[#2563eb]' : 'border-black/[0.4]'}`}>
+                      {activo && <span className="w-2 h-2 rounded-full bg-[#2563eb]" />}
+                    </span>
+                    <span className="text-sm text-black">
+                      <span className="font-semibold">{formato.label}</span>
+                      <span className="text-black/[0.4] font-mono text-xs"> {formato.ext}</span>
+                    </span>
+                  </button>
+                </li>
               );
             })}
-          </div>
-        </div>
+          </ul>
+        </section>
 
-        {/* 5. ZONA DE ARRASTRE (DRAG & DROP) TANGIBLE */}
-        <div
-          role="region"
-          aria-label="Zona para depositar documento físico"
-          onDragOver={(e) => {
-            e.preventDefault();
-            setModoArrastre(true);
-          }}
-          onDragLeave={() => setModoArrastre(false)}
-          onDrop={(e) => {
-            e.preventDefault();
-            setModoArrastre(false);
-            iniciarCargaSimulada(PRESELECCIONES_RAPIDAS[0]);
-          }}
-          className={`border-2 border-dashed rounded-[14px] p-8 text-center transition-colors ${
-            modoArrastre
-              ? 'border-[#2563eb] bg-[#2563eb]/[0.05]'
-              : 'border-black/[0.2] bg-black/[0.01] hover:border-black/[0.4]'
-          }`}
-        >
-          {/* Objeto físico central: Hoja receptora */}
-          <div className="w-14 h-18 mx-auto bg-white border border-black/[0.15] rounded-[6px] flex flex-col p-2 justify-between mb-3">
-            <div className="w-6 h-1 bg-[#2563eb] rounded-xs" />
-            <div className="space-y-1">
-              <div className="w-full h-0.5 bg-black/[0.2]" />
-              <div className="w-full h-0.5 bg-black/[0.2]" />
-              <div className="w-4/5 h-0.5 bg-black/[0.2]" />
+        {/* 5. ZONA DE ARRASTRE */}
+        <section className="border-t border-black/[0.12] py-5">
+          <div
+            role="region"
+            aria-label="Zona para depositar documento"
+            onDragOver={(e) => {
+              e.preventDefault();
+              setModoArrastre(true);
+            }}
+            onDragLeave={() => setModoArrastre(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setModoArrastre(false);
+              iniciarCargaSimulada(PRESELECCIONES_RAPIDAS[0]);
+            }}
+            className={`border-2 border-dashed rounded-[10px] p-10 text-center transition-colors ${
+              modoArrastre ? 'border-[#2563eb] bg-[#2563eb]/[0.08]' : 'border-black/[0.2] hover:border-black/[0.4]'
+            }`}
+          >
+            <div className="w-12 h-16 mx-auto bg-white border border-black/[0.12] rounded-[6px] flex flex-col p-2 justify-between mb-3">
+              <div className="w-5 h-1 bg-[#2563eb]" />
+              <div className="space-y-1">
+                <div className="w-full h-0.5 bg-black/[0.12]" />
+                <div className="w-full h-0.5 bg-black/[0.12]" />
+                <div className="w-3/4 h-0.5 bg-black/[0.12]" />
+              </div>
             </div>
-            <div className="text-[9px] font-mono text-center text-black/[0.4]">DOC</div>
+            <p className="text-base font-semibold text-black">Deposite el documento aquí o elija un archivo del equipo</p>
+            <p className="text-sm text-black/[0.7] mt-1">PDF, Excel, Word o imagen • Hasta 25 MB</p>
           </div>
+        </section>
 
-          <p className="text-sm font-semibold text-black">
-            Deposite el documento físico aquí o elija un archivo del equipo
-          </p>
-          <p className="text-xs text-black/[0.4] mt-1">
-            Formatos admitidos: PDF, XLSX, DOCX, PNG y TIFF • Hasta 25 MB
-          </p>
-        </div>
+        {/* 6. DOCUMENTOS DE EJEMPLO */}
+        <section className="border-t border-black/[0.12] py-5">
+          <h3 className="text-sm font-semibold text-black mb-2">¿Prefiere usar un documento de ejemplo?</h3>
+          <ul>
+            {[
+              { idx: 0, titulo: 'Ficha técnica: rollo de acero inoxidable 304 (PDF)', peso: '3.4 MB', linea: 'ASTM A240 • Espesor 1.5 mm • Acabado 2B' },
+              { idx: 1, titulo: 'Pedimento aduanal de importación (PDF)', peso: '1.8 MB', linea: 'Declaración de despacho con subpartida 7219.34' },
+            ].map((d) => (
+              <li key={d.idx} className="border-b border-black/[0.06] last:border-b-0">
+                <button
+                  type="button"
+                  disabled={progresoCarga !== null && progresoCarga < 100}
+                  onClick={() => iniciarCargaSimulada(PRESELECCIONES_RAPIDAS[d.idx])}
+                  className="w-full text-left px-3 py-3 min-h-[48px] rounded-[10px] hover:bg-black/[0.04] transition-colors disabled:opacity-50"
+                >
+                  <span className="flex items-baseline justify-between gap-3">
+                    <span className="text-sm font-semibold text-black">{d.titulo}</span>
+                    <span className="text-xs font-mono text-black/[0.4]">{d.peso}</span>
+                  </span>
+                  <span className="block text-xs text-black/[0.7] mt-0.5">{d.linea}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-        {/* 6. BOTONES DE CARGA RÁPIDA (DEMOSTRACIÓN PARA JURADO) */}
-        <div className="mt-6 pt-6 border-t border-black/[0.08]">
-          <div className="text-xs font-semibold text-black/[0.7] mb-3">
-            Carga rápida de prueba (Demostración de flujo):
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <button
-              type="button"
-              disabled={progresoCarga !== null && progresoCarga < 100}
-              onClick={() => iniciarCargaSimulada(PRESELECCIONES_RAPIDAS[0])}
-              className="p-3 bg-white border border-black/[0.12] hover:border-[#2563eb] hover:bg-[#2563eb]/[0.02] text-left rounded-[10px] transition-colors disabled:opacity-50"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-black">
-                  Cargar Ficha Técnica: Rollo Acero Inox 304 (PDF)
-                </span>
-                <span className="text-[10px] font-mono text-black/[0.4]">3.4 MB</span>
-              </div>
-              <div className="text-[11px] text-black/[0.6] mt-1">
-                ASTM A240 • Espesor 1.5 mm • Acabado 2B
-              </div>
-            </button>
-
-            <button
-              type="button"
-              disabled={progresoCarga !== null && progresoCarga < 100}
-              onClick={() => iniciarCargaSimulada(PRESELECCIONES_RAPIDAS[1])}
-              className="p-3 bg-white border border-black/[0.12] hover:border-[#2563eb] hover:bg-[#2563eb]/[0.02] text-left rounded-[10px] transition-colors disabled:opacity-50"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-black">
-                  Cargar Pedimento Aduanal de Importación (PDF)
-                </span>
-                <span className="text-[10px] font-mono text-black/[0.4]">1.8 MB</span>
-              </div>
-              <div className="text-[11px] text-black/[0.6] mt-1">
-                Declaración de despacho aduanal con subpartida 7219.34
-              </div>
-            </button>
-          </div>
-        </div>
-
-        {/* 7. ESTADO DE PROGRESO Y CÁLCULO DE HASH SHA-256 */}
+        {/* 7. PROGRESO E INTEGRIDAD */}
         {progresoCarga !== null && (
-          <div className="mt-6 p-4 bg-black/[0.02] border border-black/[0.12] rounded-[10px] space-y-3">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-black">
-                Procesando: {archivoEnProceso}
-              </span>
-              <span className="font-mono text-black/[0.6]">
-                {progresoCarga}%
-              </span>
+          <section className="border-t border-black/[0.12] py-5 space-y-3">
+            <div className="flex items-center justify-between text-sm">
+              <span className="font-semibold text-black">Procesando: {archivoEnProceso}</span>
+              <span className="font-mono text-black/[0.7]">{progresoCarga}%</span>
             </div>
-
-            {/* Barra física de progreso sin gradientes */}
-            <div className="w-full h-2 bg-black/[0.08] rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#2563eb] transition-all duration-150"
-                style={{ width: `${progresoCarga}%` }}
-              />
+            <div className="w-full h-2 bg-black/[0.06] rounded-full overflow-hidden">
+              <div className="h-full bg-[#2563eb] transition-all duration-150" style={{ width: `${progresoCarga}%` }} />
             </div>
-
             {hashCalculado ? (
-              <div className="pt-2 border-t border-black/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px]">
-                <div className="text-emerald-800 font-medium flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-700" />
-                  <span>Integridad verificada (SHA-256):</span>
-                </div>
-                <div className="font-mono text-[10px] text-black/[0.6] truncate max-w-sm">
-                  {hashCalculado}
-                </div>
+              <div className="text-sm">
+                <p className="text-emerald-800 font-semibold">Integridad del documento verificada.</p>
+                <p className="font-mono text-xs text-black/[0.7] break-all mt-0.5">{hashCalculado}</p>
               </div>
             ) : (
-              <div className="text-[11px] text-black/[0.4] flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse" />
-                <span>Calculando huella digital criptográfica y enviando a OCR...</span>
-              </div>
+              <p className="text-sm text-amber-900">Verificando integridad del documento…</p>
             )}
-          </div>
+          </section>
         )}
 
-        {/* 8. SIMULACIÓN DE NODOS DE EXCEPCIÓN DEL ALGORITMO */}
-        <div className="mt-6 pt-6 border-t border-black/[0.08]">
-          <div className="text-xs font-semibold text-black/[0.7] mb-2 flex items-center justify-between">
-            <span>Demostración de Casos de Excepción del Flujo:</span>
-            <span className="text-[11px] font-normal text-black/[0.4]">Simulación guiada</span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-            <button
-              type="button"
-              onClick={() => setModalExcepcion('ocr_error')}
-              className="p-2.5 rounded-[10px] border border-amber-300 bg-amber-50/[0.6] hover:bg-amber-50 text-left transition-colors"
-            >
-              <div className="text-xs font-bold text-amber-900 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-amber-600" />
-                <span>Error OCR / Ilegible</span>
-              </div>
-              <div className="text-[11px] text-amber-900/[0.8] mt-0.5">
-                Texto degradado → Captura manual guiada
-              </div>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setModalExcepcion('fuera_alcance')}
-              className="p-2.5 rounded-[10px] border border-rose-300 bg-rose-50/[0.6] hover:bg-rose-50 text-left transition-colors"
-            >
-              <div className="text-xs font-bold text-rose-900 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-rose-700" />
-                <span>Fuera de Alcance</span>
-              </div>
-              <div className="text-[11px] text-rose-900/[0.8] mt-0.5">
-                No es Cap. 72/73 → Nota 1 y desvío a Cap. 84
-              </div>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setModalExcepcion('reuso')}
-              className="p-2.5 rounded-[10px] border border-emerald-300 bg-emerald-50/[0.6] hover:bg-emerald-50 text-left transition-colors"
-            >
-              <div className="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-700" />
-                <span>Reuso Inmediato</span>
-              </div>
-              <div className="text-[11px] text-emerald-900/[0.8] mt-0.5">
-                Precedente aprobado → Dictamen 2026-0142
-              </div>
-            </button>
-          </div>
-        </div>
+        {/* 8. CASOS ESPECIALES */}
+        <section className="border-t border-black/[0.12] py-5">
+          <h3 className="text-sm font-semibold text-black mb-2">¿Quiere ver qué pasa en un caso especial?</h3>
+          <ul>
+            <li>
+              <button type="button" onClick={() => setModalExcepcion('ocr_error')} className="w-full text-left px-3 py-3 min-h-[48px] rounded-[10px] hover:bg-black/[0.04] transition-colors">
+                <span className="block text-sm font-semibold text-amber-900">Documento ilegible</span>
+                <span className="block text-xs text-black/[0.7]">El texto no se alcanza a leer: se pasa a captura manual guiada.</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" onClick={() => setModalExcepcion('fuera_alcance')} className="w-full text-left px-3 py-3 min-h-[48px] rounded-[10px] hover:bg-black/[0.04] transition-colors">
+                <span className="block text-sm font-semibold text-rose-800">Material fuera de alcance</span>
+                <span className="block text-xs text-black/[0.7]">No es hierro ni acero (Capítulos 72 y 73): se indica el capítulo correcto.</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" onClick={() => setModalExcepcion('reuso')} className="w-full text-left px-3 py-3 min-h-[48px] rounded-[10px] hover:bg-black/[0.04] transition-colors">
+                <span className="block text-sm font-semibold text-emerald-800">Documento ya clasificado</span>
+                <span className="block text-xs text-black/[0.7]">Coincide con un expediente aprobado: se reutiliza el dictamen 2026-0142.</span>
+              </button>
+            </li>
+          </ul>
+        </section>
 
       </div>
 
