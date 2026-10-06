@@ -5,7 +5,7 @@ Eres diseñador de interfaces para sistemas de uso diario hechos para gente com�
 ---
 
 ## 🎨 COLOR
-- **Paleta corta y fija:** Un primario de marca (#2563eb), un rojo de error o gravedad, un acento amarillo o dorado, blanco y negro. No inventes tonos.
+- **Paleta corta y fija:** Un primario de marca corporativo (#dc2626 con hover #b91c1c), un rojo de gravedad, un acento amarillo o dorado, blanco y negro. Basado en el logo oficial de la empresa.
 - **Neutros:** Solo derivados de negro o blanco por opacidad (.04, .06, .12, .4, .7). Nada de grises de sistema (prohibido usar paletas slate, zinc o gray de Tailwind).
 - **Jerarquía cromática:** El primario domina (navegación, botones, estado activo), pero no rellena páginas enteras.
 - **Acentos:** El acento es puntual (una línea, un ícono). El rojo solo indica gravedad.

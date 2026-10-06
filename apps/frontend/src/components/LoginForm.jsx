@@ -87,7 +87,7 @@ export default function LoginForm({
         >
           <div
             className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${
-              rememberMe ? 'bg-[#2563eb] border-[#2563eb] text-white' : 'border-slate-300 bg-white'
+              rememberMe ? 'bg-[#dc2626] border-[#dc2626] text-white' : 'border-slate-300 bg-white'
             }`}
           >
             <Check className="w-3 h-3 stroke-[3]" />
@@ -98,7 +98,7 @@ export default function LoginForm({
         <button
           type="button"
           onClick={onSwitchToRecovery}
-          className="text-xs font-semibold text-[#2563eb] hover:text-blue-700 hover:underline cursor-pointer"
+          className="text-xs font-semibold text-[#dc2626] hover:text-red-700 hover:underline cursor-pointer"
         >
           ¿Olvidó su contraseña?
         </button>

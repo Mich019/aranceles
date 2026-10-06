@@ -6,7 +6,7 @@ export default function SkeuomorphicPanel({ children, mode = 'LOGIN', onTabChang
     <div className="w-full max-w-md mx-auto bg-white rounded-2xl p-7 sm:p-8 shadow-none ring-1 ring-slate-900/5 transition-all duration-200">
       {/* Header Branding */}
       <div className="flex flex-col items-center text-center mb-6">
-        <div className="w-11 h-11 rounded-xl bg-[#2563eb]/10 text-[#2563eb] border border-[#2563eb]/20 flex items-center justify-center mb-3.5">
+        <div className="w-11 h-11 rounded-xl bg-[#dc2626]/10 text-[#dc2626] border border-[#dc2626]/20 flex items-center justify-center mb-3.5">
           <Shield className="w-5 h-5 stroke-[2.2]" />
         </div>
 

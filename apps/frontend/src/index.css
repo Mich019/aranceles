@@ -1,27 +1,201 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
     --bg-page: #f1f5f9;
     --card-bg: #ffffff;
-    --accent-blue: #2563eb;
+    --brand-primary: #dc2626;
+    --brand-primary-dark: #b91c1c;
+    color-scheme: light;
+  }
+
+  .dark {
+    --bg-page: #0b0f19;
+    --card-bg: #111827;
+    color-scheme: dark;
   }
 
   body {
-    background-color: #f1f5f9;
+    background-color: var(--bg-page);
     color: #0f172a;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     user-select: none;
     margin: 0;
     padding: 0;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .dark body {
+    background-color: #0b0f19;
+    color: #f1f5f9;
   }
 }
 
-/* Vercel/Linear Clean Flat Utility System */
+/* ========================================================================= */
+/* MODO OSCURO GLOBAL: CONVERSIÓN DE FONDOS DE TARJETAS BLANCAS A OSCURO     */
+/* ========================================================================= */
 
+/* 1. Fondo de tarjetas, paneles, contenedores y tablas en modo oscuro */
+.dark .bg-white:not(.keep-white):not([data-keep-white]) {
+  background-color: #111827 !important;
+}
+
+/* 2. Fondos secundarios y divisores suaves */
+.dark .bg-slate-50:not(.keep-white):not([data-keep-white]),
+.dark .bg-\[\#f8fafc\] {
+  background-color: #151d2c !important;
+}
+
+.dark .bg-slate-100:not(.keep-white):not([data-keep-white]) {
+  background-color: #1a2333 !important;
+}
+
+/* Prevenir que fondos semi-transparentes de slate claro creen capas grisáceas lavadas en modo oscuro */
+.dark [class*="bg-slate-50/"] {
+  background-color: #131b28 !important;
+}
+
+.dark [class*="bg-slate-100/"] {
+  background-color: #182232 !important;
+}
+
+/* 3. Prevenir que hover sobre tarjetas o botones las ponga blancas en modo oscuro */
+.dark [class*="hover:bg-white"]:hover,
+.dark .hover\:bg-white:hover,
+.dark [class*="hover:bg-slate-50"]:hover,
+.dark [class*="hover:bg-slate-100"]:hover,
+.dark [class*="hover:bg-slate-200"]:hover,
+.dark .hover\:bg-slate-50:hover,
+.dark .hover\:bg-slate-100:hover,
+.dark .hover\:bg-slate-200:hover {
+  background-color: #1e293b !important;
+}
+
+.dark [class*="hover:bg-amber-50"]:hover,
+.dark .hover\:bg-amber-50:hover {
+  background-color: #38240d !important;
+}
+
+.dark [class*="hover:bg-red-50"]:hover,
+.dark .hover\:bg-red-50:hover {
+  background-color: #2b1417 !important;
+}
+
+/* Prevenir fondos lavados o pasteles claros en insignias/badges */
+.dark .bg-amber-50,
+.dark [class*="bg-amber-50/"] {
+  background-color: #271a0c !important;
+}
+.dark .bg-amber-100,
+.dark [class*="bg-amber-100/"] {
+  background-color: #38240d !important;
+}
+.dark .bg-red-50,
+.dark [class*="bg-red-50/"] {
+  background-color: #261114 !important;
+}
+.dark .bg-emerald-50,
+.dark [class*="bg-emerald-50/"] {
+  background-color: #0b2419 !important;
+}
+.dark .bg-blue-50,
+.dark [class*="bg-blue-50/"] {
+  background-color: #0d1e36 !important;
+}
+
+.dark .text-amber-700,
+.dark .text-amber-800,
+.dark .text-amber-900 {
+  color: #fcd34d !important;
+}
+.dark .text-emerald-700,
+.dark .text-emerald-800 {
+  color: #6ee7b7 !important;
+}
+.dark .text-blue-700,
+.dark .text-blue-800 {
+  color: #93c5fd !important;
+}
+
+.dark .border-amber-200,
+.dark [class*="border-amber-200/"] {
+  border-color: #78350f !important;
+}
+.dark .border-emerald-200,
+.dark [class*="border-emerald-200/"] {
+  border-color: #064e3b !important;
+}
+.dark .border-blue-200,
+.dark [class*="border-blue-200/"] {
+  border-color: #1e3a8a !important;
+}
+
+/* 4. Bordes de tarjetas y separadores */
+.dark .border-slate-200,
+.dark .border-slate-200\/90,
+.dark .border-slate-200\/80,
+.dark .border-slate-200\/60,
+.dark .border-slate-200\/50,
+.dark .border-slate-100,
+.dark .border-black\/\[0\.12\],
+.dark .border-black\/\[0\.08\],
+.dark .border-black\/\[0\.06\] {
+  border-color: #1e293b !important;
+}
+
+/* 5. Tipografía y contrastes legibles */
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark .text-black {
+  color: #f1f5f9 !important;
+}
+
+.dark .text-slate-700,
+.dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+.dark .text-slate-500,
+.dark .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+/* 6. Inputs y campos de formulario en modo oscuro */
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark select,
+.dark textarea {
+  background-color: #151d2c !important;
+  color: #f1f5f9 !important;
+  border-color: #2e3a4d !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* 7. Casillas de verificación no activas en la matriz de permisos */
+.dark .bg-white.border-2 {
+  background-color: #151d2c !important;
+  border-color: #3b485d !important;
+}
+
+/* 8. Hover suave en filas de tablas en modo oscuro */
+.dark tr:hover {
+  background-color: #172033 !important;
+}
+
+/* Vercel/Linear Clean Flat Utility System */
 .clean-card {
   background-color: #ffffff;
   box-shadow: none;
+}
+
+.dark .clean-card {
+  background-color: #111827 !important;
+  color: #f9fafb !important;
 }
 
 .clean-input-container {
@@ -31,18 +205,25 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+.dark .clean-input-container {
+  background-color: #111827 !important;
+  border-color: #374151 !important;
+  color: #f9fafb !important;
+}
+
 .clean-input-container:focus-within {
-  border-color: #2563eb;
-  box-shadow: inset 0 0 0 1px #2563eb, 0 0 0 1px #2563eb;
+  border-color: #dc2626;
+  box-shadow: inset 0 0 0 1px #dc2626, 0 0 0 1px #dc2626;
 }
 
 .clean-button-primary {
-  background-color: #2563eb;
+  background-color: #dc2626;
   color: #ffffff;
   box-shadow: none;
-  transition: opacity 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out, opacity 0.15s ease-in-out;
 }
 
 .clean-button-primary:hover {
-  opacity: 0.9;
+  background-color: #b91c1c;
+  opacity: 0.95;
 }

@@ -52,7 +52,7 @@ export default function TerminalDisplay({
       {/* Screen Main Telemetry Panel */}
       <div className="space-y-1">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-slate-400 uppercase tracking-widest text-[10px]">MÓDULO INSTITUCIONAL:</span>
+          <span className="text-slate-400 uppercase tracking-widest text-[10px]">SERVICIO INSTITUCIONAL:</span>
           <span className="text-blue-300 font-bold text-[11px] tracking-wider">
             {mode === 'LOGIN' ? 'AUTENTICACIÓN DE IDENTIDAD' : 'RESTABLECIMIENTO DE ACCESO'}
           </span>

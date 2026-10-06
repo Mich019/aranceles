@@ -12,6 +12,11 @@ export interface DatosSimulados {
   pesoNeto?: string;
   unidadMedida?: string;
   paisOrigen?: string;
+  supervisorVoBo?: {
+    nombre: string;
+    cargo: string;
+    fechaHora: string;
+  };
 }
 
 export interface AppShellProps {
@@ -24,8 +29,10 @@ export interface AppShellProps {
   layaActivo: boolean;
   setLayaActivo: React.Dispatch<React.SetStateAction<boolean>>;
   datosSimulados: DatosSimulados;
-  usuarioActivo?: { nombre: string; cargo: string; correo: string } | null;
+  usuarioActivo?: { nombre: string; cargo: string; correo: string; sede?: string } | null;
+  modoVista?: 'admin_hub' | 'operacion';
   onReset?: () => void;
+  onIrAAdminHub?: () => void;
   children: React.ReactNode;
 }
 
@@ -49,127 +56,134 @@ export const AppShell: React.FC<AppShellProps> = ({
   setLayaActivo,
   datosSimulados,
   usuarioActivo,
+  modoVista = 'operacion',
   onReset,
+  onIrAAdminHub,
   children,
 }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-[#f1f5f9] text-black font-sans antialiased selection:bg-[#2563eb]/[0.12] selection:text-[#2563eb]">
-      {/* 1. BARRA SUPERIOR INSTITUCIONAL TANGIBLE */}
-      <header className="bg-white border-b border-black/[0.12] sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-4">
+    <div className="min-h-screen flex flex-col bg-[#f1f5f9] text-[#0f172a] font-sans antialiased selection:bg-[#dc2626]/10 selection:text-[#dc2626]">
+      {/* 1. BARRA SUPERIOR INSTITUCIONAL LIMPIA */}
+      <header className="bg-white border-b border-[#e2e8f0] sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-4">
           
           {/* Lado Izquierdo: Branding Oficial */}
           <div className="flex items-center gap-3">
-            {/* Emblema institucional físico sobrio */}
-            <div className="w-8 h-8 rounded-[10px] bg-black/[0.04] border border-black/[0.12] flex items-center justify-center text-black font-bold text-xs tracking-wider">
-              SNA
-            </div>
+            <img
+              src="/logo.png"
+              alt="Logo Institucional"
+              className="w-8 h-8 object-contain shrink-0 drop-shadow-xs"
+            />
             <div>
-              <h1 className="text-sm md:text-base font-semibold text-black leading-tight">
+              <h1 className="text-sm font-semibold text-[#0f172a] leading-tight">
                 Sistema Nacional de Aranceles
               </h1>
-              <p className="text-xs text-black/[0.4] leading-tight font-normal">
-                Plataforma Institucional de Control Arancelario
+              <p className="text-xs text-[#64748b] leading-tight font-normal">
+                {modoVista === 'admin_hub'
+                  ? 'Centro de Mando Administrativo'
+                  : 'Plataforma Institucional de Control Arancelario'}
               </p>
             </div>
           </div>
 
-          {/* Centro: Toggles de Asistentes IA (Solo visibles con sesión iniciada) */}
-          {pasoActual > 0 && (
-            <div className="hidden lg:flex items-center gap-3">
+          {/* Centro: Asistentes IA compactos y limpios */}
+          {modoVista !== 'admin_hub' && pasoActual > 0 && (
+            <div className="hidden lg:flex items-center gap-4 bg-[#f8fafc] border border-[#e2e8f0] px-3 py-1.5 rounded-full text-xs">
               {/* Toggle Qwen 2.5 */}
-              <div className="flex items-center gap-2.5 px-2 py-1.5">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <span className="text-xs font-medium text-[#475569]">Qwen 2.5</span>
                 <button
                   type="button"
                   role="switch"
                   aria-checked={qwenActivo}
                   onClick={() => setQwenActivo((prev) => !prev)}
-                  className={`w-9 h-5 rounded-full transition-colors relative border flex items-center ${
-                    qwenActivo
-                      ? 'bg-[#2563eb] border-[#2563eb]'
-                      : 'bg-black/[0.12] border-black/[0.2]'
+                  className={`w-7 h-4 rounded-full transition-colors relative flex items-center p-0.5 ${
+                    qwenActivo ? 'bg-[#dc2626]' : 'bg-[#cbd5e1]'
                   }`}
-                  title="Activar o desactivar normalización ortográfica"
+                  title="Normalización ortográfica"
                 >
                   <span
-                    className={`w-3.5 h-3.5 bg-white rounded-full transition-transform transform shadow-none block ${
-                      qwenActivo ? 'translate-x-4' : 'translate-x-0.5'
+                    className={`w-3 h-3 bg-white rounded-full transition-transform shadow-sm block ${
+                      qwenActivo ? 'translate-x-3' : 'translate-x-0'
                     }`}
                   />
                 </button>
-                <div className="text-left">
-                  <div className="text-xs font-semibold text-black leading-tight">
-                    Normalización ortográfica (Qwen 2.5)
-                  </div>
-                  <div className="text-[11px] text-black/[0.4] leading-tight">
-                    {qwenActivo ? 'Corrige tipografía y términos' : 'Desactivado'}
-                  </div>
-                </div>
-              </div>
+              </label>
+
+              <span className="w-px h-3 bg-[#e2e8f0]" />
 
               {/* Toggle Laya */}
-              <div className="flex items-center gap-2.5 px-2 py-1.5">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <span className="text-xs font-medium text-[#475569]">Laya</span>
                 <button
                   type="button"
                   role="switch"
                   aria-checked={layaActivo}
                   onClick={() => setLayaActivo((prev) => !prev)}
-                  className={`w-9 h-5 rounded-full transition-colors relative border flex items-center ${
-                    layaActivo
-                      ? 'bg-[#2563eb] border-[#2563eb]'
-                      : 'bg-black/[0.12] border-black/[0.2]'
+                  className={`w-7 h-4 rounded-full transition-colors relative flex items-center p-0.5 ${
+                    layaActivo ? 'bg-[#dc2626]' : 'bg-[#cbd5e1]'
                   }`}
-                  title="Activar o desactivar asistencia cualitativa"
+                  title="Asistencia cualitativa"
                 >
                   <span
-                    className={`w-3.5 h-3.5 bg-white rounded-full transition-transform transform shadow-none block ${
-                      layaActivo ? 'translate-x-4' : 'translate-x-0.5'
+                    className={`w-3 h-3 bg-white rounded-full transition-transform shadow-sm block ${
+                      layaActivo ? 'translate-x-3' : 'translate-x-0'
                     }`}
                   />
                 </button>
-                <div className="text-left">
-                  <div className="text-xs font-semibold text-black leading-tight">
-                    Asistencia cualitativa (Laya)
-                  </div>
-                  <div className="text-[11px] text-black/[0.4] leading-tight">
-                    {layaActivo ? 'Sugiere opciones cerradas' : 'Desactivado'}
-                  </div>
-                </div>
-              </div>
+              </label>
             </div>
           )}
 
-          {/* Lado Derecho: Funcionario Autenticado + Cerrar sesión (Solo con sesión iniciada) */}
-          {pasoActual > 0 && (
+          {/* Lado Derecho: Funcionario Autenticado + Cerrar sesión */}
+          {(modoVista === 'admin_hub' || pasoActual > 0) && (
             <div className="flex items-center gap-3">
               <div className="text-right">
-                <div className="text-sm font-semibold text-black leading-tight">
-                  {usuarioActivo?.nombre || 'Diego Ramírez'}
+                <div className="text-xs font-semibold text-[#0f172a] leading-tight">
+                  {usuarioActivo?.nombre || (modoVista === 'admin_hub' ? 'Lic. Sofía Valenzuela' : 'Diego Ramírez')}
                 </div>
-                <div className="text-xs text-black/[0.7] leading-tight">
-                  {usuarioActivo?.cargo || 'Clasificador Aduanal'} • Aduana de Nuevo Laredo
+                <div className="text-[11px] text-[#64748b] leading-tight">
+                  {usuarioActivo?.cargo || (modoVista === 'admin_hub' ? 'Administrador Central' : 'Clasificador Aduanal')}
+                  {usuarioActivo?.sede ? ` • ${usuarioActivo.sede}` : ''}
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={onReset ? onReset : () => setPasoActual(0)}
-                className="text-xs font-medium text-black/[0.6] hover:text-rose-800 hover:underline px-2 py-1 rounded-[10px] transition-colors"
-              >
-                Cerrar sesión
-              </button>
+              <div className="flex items-center gap-2">
+                {onIrAAdminHub && (
+                  <button
+                    type="button"
+                    onClick={onIrAAdminHub}
+                    className="text-xs font-semibold text-[#dc2626] bg-[#fef2f2] hover:bg-[#fee2e2] px-2.5 py-1.5 rounded-lg border border-[#fecaca] transition-colors flex items-center gap-1.5 cursor-pointer shadow-none"
+                    title="Abrir la Consola de Administración y Control"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Consola Administrador</span>
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={onReset ? onReset : () => setPasoActual(0)}
+                  className="text-xs font-medium text-[#64748b] hover:text-[#dc2626] px-2.5 py-1.5 rounded-lg border border-[#e2e8f0] hover:border-[#fecaca] hover:bg-[#fef2f2] transition-colors cursor-pointer"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Toggles móviles (visibles solo con sesión iniciada en pantallas pequeñas) */}
-        {pasoActual > 0 && (
-          <div className="lg:hidden border-t border-black/[0.06] px-4 py-2 flex flex-wrap gap-2 justify-center bg-black/[0.01]">
+        {/* Toggles móviles compactos */}
+        {modoVista !== 'admin_hub' && pasoActual > 0 && (
+          <div className="lg:hidden border-t border-[#e2e8f0] px-4 py-2 flex gap-3 justify-center bg-[#f8fafc]">
             <button
               type="button"
               onClick={() => setQwenActivo((prev) => !prev)}
-              className={`text-xs px-2.5 py-2 rounded-[10px] ${
-                qwenActivo ? 'bg-[#2563eb]/[0.08] text-[#2563eb] font-semibold' : 'text-black/[0.4]'
+              className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                qwenActivo ? 'bg-[#dc2626]/10 border-[#dc2626]/30 text-[#dc2626] font-semibold' : 'border-[#e2e8f0] text-[#64748b]'
               }`}
             >
               Qwen 2.5: {qwenActivo ? 'Activo' : 'Inactivo'}
@@ -177,8 +191,8 @@ export const AppShell: React.FC<AppShellProps> = ({
             <button
               type="button"
               onClick={() => setLayaActivo((prev) => !prev)}
-              className={`text-xs px-2.5 py-2 rounded-[10px] ${
-                layaActivo ? 'bg-[#2563eb]/[0.08] text-[#2563eb] font-semibold' : 'text-black/[0.4]'
+              className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                layaActivo ? 'bg-[#dc2626]/10 border-[#dc2626]/30 text-[#dc2626] font-semibold' : 'border-[#e2e8f0] text-[#64748b]'
               }`}
             >
               Laya: {layaActivo ? 'Activo' : 'Inactivo'}
@@ -187,14 +201,14 @@ export const AppShell: React.FC<AppShellProps> = ({
         )}
       </header>
 
-      {/* 2. BARRA DE ETAPAS LINEAL (SIN NOMBRES DE MÓDULO NI RF-XXX) */}
-      {pasoActual > 0 && (
+      {/* 2. BARRA DE ETAPAS LINEAL LIMPIA */}
+      {modoVista !== 'admin_hub' && pasoActual > 0 && (
         <nav
           aria-label="Progreso del flujo arancelario"
-          className="bg-white border-b border-black/[0.12] sticky top-[57px] z-30"
+          className="bg-white border-b border-[#e2e8f0] sticky top-[57px] z-30"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 overflow-x-auto">
-            <div className="flex items-center gap-2 min-w-max">
+            <div className="flex items-center gap-1.5 min-w-max">
               {ETAPAS_FLUJO.map((etapa, idx) => {
                 const esActivo = pasoActual === etapa.id;
                 const esCompletado = pasoActual > etapa.id;
@@ -204,19 +218,19 @@ export const AppShell: React.FC<AppShellProps> = ({
                     <button
                       type="button"
                       onClick={() => setPasoActual(etapa.id)}
-                      className={`px-3 py-2 rounded-[10px] text-xs transition-colors ${
+                      className={`px-3 py-1.5 rounded-full text-xs transition-colors cursor-pointer ${
                         esActivo
-                          ? 'bg-[#2563eb]/[0.08] text-[#2563eb] font-semibold'
+                          ? 'bg-[#dc2626] text-white font-medium shadow-xs'
                           : esCompletado
-                          ? 'text-black font-medium'
-                          : 'text-black/[0.4] hover:text-black/[0.7]'
+                          ? 'text-[#0f172a] hover:bg-[#f1f5f9] font-medium'
+                          : 'text-[#94a3b8] hover:text-[#64748b]'
                       }`}
                     >
                       <span>{etapa.label}</span>
                     </button>
 
                     {idx < ETAPAS_FLUJO.length - 1 && (
-                      <span className="text-black/[0.2] text-xs select-none">→</span>
+                      <span className="text-[#cbd5e1] text-xs px-1 select-none">›</span>
                     )}
                   </React.Fragment>
                 );
@@ -226,15 +240,15 @@ export const AppShell: React.FC<AppShellProps> = ({
         </nav>
       )}
 
-      {/* 3. ÁREA PRINCIPAL DINÁMICA */}
+      {/* 3. ÁREA PRINCIPAL DINÁMICA CON ESPACIADO CÓMODO */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 md:p-8">
         {children}
       </main>
 
       {/* 4. PIE DE PÁGINA OFICIAL */}
-      <footer className="bg-white border-t border-black/[0.08] py-4 mt-auto">
+      <footer className="bg-white border-t border-[#e2e8f0] py-4 mt-auto">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-xs text-black/[0.4] font-normal tracking-normal">
+          <p className="text-xs text-[#64748b] font-normal tracking-normal">
             © 2026 FASITLAC • Todos los derechos reservados
           </p>
         </div>

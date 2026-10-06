@@ -24,7 +24,7 @@ export default function RecessedInput({
           className="flex items-center justify-between text-sm font-medium text-slate-500"
         >
           <span>
-            {label} {required && <span className="text-[#2563eb]">*</span>}
+            {label} {required && <span className="text-[#dc2626]">*</span>}
           </span>
           {error && (
             <span className="text-xs text-red-600 font-medium flex items-center gap-1">
@@ -40,7 +40,7 @@ export default function RecessedInput({
         className={`relative flex items-center w-full rounded-xl border transition-all bg-[#f8fafc] ${
           error
             ? 'border-red-300 focus-within:border-red-500 focus-within:ring-1 focus-within:ring-red-500'
-            : 'border-slate-200 focus-within:border-[#2563eb] focus-within:ring-1 focus-within:ring-[#2563eb]'
+            : 'border-slate-200 focus-within:border-[#dc2626] focus-within:ring-1 focus-within:ring-[#dc2626]'
         }`}
       >
         {Icon && (

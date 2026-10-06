@@ -265,7 +265,7 @@ export default function SecurityAdminPanel({ userSession }) {
               <h1 className="text-lg font-bold text-slate-900">
                 Administración de Seguridad
               </h1>
-              <span className="text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-0.5 rounded-full">
+              <span className="text-[11px] font-semibold bg-blue-50 text-red-700 border border-blue-200 px-2.5 py-0.5 rounded-full">
                 Control Institucional
               </span>
             </div>
@@ -417,16 +417,16 @@ export default function SecurityAdminPanel({ userSession }) {
             </p>
           </div>
 
-          {/* Botón "Nueva Clave" - Botón Secundario (texto #2563eb, borde #cbd5e1) */}
+          {/* Botón "Nueva Clave" - Botón Secundario (texto #dc2626, borde #cbd5e1) */}
           <button
             type="button"
             onClick={() => {
               setGeneratedKeyResult(null);
               setIsCreateKeyModalOpen(true);
             }}
-            className="px-4 py-2 text-xs font-semibold text-[#2563eb] bg-white border border-[#cbd5e1] hover:bg-slate-50 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm cursor-pointer shrink-0"
+            className="px-4 py-2 text-xs font-semibold text-[#dc2626] bg-white border border-[#cbd5e1] hover:bg-slate-50 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm cursor-pointer shrink-0"
           >
-            <Plus className="w-4 h-4 text-[#2563eb]" />
+            <Plus className="w-4 h-4 text-[#dc2626]" />
             <span>Nueva Clave</span>
           </button>
         </div>
@@ -471,7 +471,7 @@ export default function SecurityAdminPanel({ userSession }) {
                       </div>
                     </td>
                     <td className="py-3.5 px-4 text-xs text-slate-600 whitespace-nowrap">
-                      <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-medium text-[11px] border border-blue-200">
+                      <span className="bg-blue-50 text-red-700 px-2 py-0.5 rounded font-medium text-[11px] border border-blue-200">
                         {keyItem.scope}
                       </span>
                     </td>

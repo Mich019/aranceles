@@ -12,8 +12,8 @@ Este documento define las directrices del diseño de interfaz para el proyecto *
 
 - **Lienzo de Fondo**: `#f1f5f9` (Gris slate muy suave).
 - **Tarjetas y Paneles**: `#ffffff` con bordes nítidos de 1px (`#e2e8f0`) y sin sombras recargadas (`shadow-sm` o sin sombra).
-- **Azul Primario de Acción**: `#2563eb` (Azul corporativo institucional).
-- **Campos de Texto**: `#f8fafc` con borde `#cbd5e1` que se ilumina a azul `#2563eb` al recibir foco.
+- **Rojo Primario Corporativo**: `#dc2626` (con hover `#b91c1c` y fondos de selección suave `#fef2f2`), extraído del logo corporativo institucional.
+- **Campos de Texto**: `#f8fafc` con borde `#cbd5e1` que se ilumina a rojo `#dc2626` al recibir foco.
 - **Tipografía y Textos**:
   - Títulos principales: `#0f172a` / `#1e293b`
   - Subtítulos y etiquetas: `#64748b`

@@ -76,159 +76,120 @@ export const RankingView: React.FC<RankingViewProps> = ({
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 py-2">
-      <div className="bg-white border border-black/[0.12] rounded-[18px] p-6 sm:p-8 space-y-6">
+      <div className="bg-white border border-[#e2e8f0] rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs">
         
-        {/* ========================================================================= */}
-        {/* 1. SEMÁFORO DE CONFIANZA EXPLÍCITO Y VEREDICTO DETERMINISTA */}
-        {/* ========================================================================= */}
+        {/* Encabezado y certeza determinista */}
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#2563eb]">
-              Dictamen y Ranking del Motor Determinista
-            </span>
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-wider text-[#dc2626]">
+                Resolución del Motor Determinista
+              </span>
+              <h2 className="text-base sm:text-lg font-bold text-[#0f172a] mt-0.5">
+                Clasificación Arancelaria Resultante
+              </h2>
+            </div>
 
-            {/* Badge de semáforo verde estricto (>0.99) */}
-            <div className="flex items-center gap-2 text-emerald-800 bg-emerald-50 border border-emerald-300 px-3 py-1 rounded-[10px] text-xs font-semibold">
-              <span className="w-2 h-2 rounded-full bg-emerald-700" />
-              <span>{(confianza * 100).toFixed(1)}% de Coincidencia Determinista • Nivel de Certeza Óptimo</span>
+            <div className="flex items-center gap-2 text-[#065f46] bg-[#ecfdf5] border border-[#a7f3d0] px-3 py-1 rounded-full text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-[#059669]" />
+              <span>{(confianza * 100).toFixed(1)}% Coincidencia Determinista • Nivel Óptimo</span>
             </div>
           </div>
 
-          {/* Tarjeta de Fracción Sugerida */}
-          <div className="p-5 bg-black/[0.02] border border-black/[0.12] rounded-[10px] space-y-2">
-            <span className="text-xs text-black/[0.5] block font-mono">
+          {/* Tarjeta de Fracción Determinada */}
+          <div className="p-5 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl space-y-2">
+            <span className="text-xs text-[#64748b] block font-mono">
               Fracción Arancelaria Determinada:
             </span>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-black tracking-tight">
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-[#0f172a] tracking-tight">
               {fraccion}
             </div>
-            <p className="text-xs sm:text-sm text-black/[0.8] leading-relaxed pt-1 border-t border-black/[0.08]">
+            <p className="text-xs sm:text-sm text-[#475569] leading-relaxed pt-2 border-t border-[#e2e8f0]">
               <strong>Descripción oficial LIGIE:</strong> «Productos laminados planos de acero inoxidable, de anchura superior o igual a 600 mm, simplemente laminados en frío, de espesor superior a 0.5 mm pero inferior a 1 mm».
             </p>
           </div>
         </div>
 
-        {/* ========================================================================= */}
-        {/* 2. JUSTIFICACIÓN AUDITABLE Y DESGLOSADA */}
-        {/* ========================================================================= */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-black/[0.08]">
-            <h3 className="text-xs font-bold text-black uppercase tracking-wider">
+        {/* Fundamentación Técnica y Trazabilidad */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between pb-2 border-b border-[#e2e8f0]">
+            <h3 className="text-xs font-semibold text-[#475569] uppercase tracking-wider">
               Fundamentación Técnica y Trazabilidad Legal
             </h3>
-            <span className="text-[11px] text-black/[0.4]">Auditoría Nivel 1</span>
+            <span className="text-[11px] text-[#94a3b8]">Auditoría Nivel 1</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
-            {/* A. Variables Coincidentes */}
-            <div className="p-4 bg-white border border-black/[0.12] rounded-[10px] space-y-2">
-              <span className="text-xs font-bold text-black block">
+            {/* Variables Coincidentes */}
+            <div className="p-4 bg-white border border-[#e2e8f0] rounded-xl space-y-2">
+              <span className="text-xs font-semibold text-[#0f172a] block">
                 Variables Coincidentes Verificadas:
               </span>
-              <ul className="text-xs text-black/[0.7] space-y-1.5 list-disc pl-4 leading-normal">
+              <ul className="text-xs text-[#64748b] space-y-1.5 list-disc pl-4 leading-normal">
                 <li>
-                  <strong className="text-black">Espesor:</strong> 0.90 mm se encuentra dentro del rango legal [0.5 mm, 1.0 mm].
+                  <strong className="text-[#0f172a]">Espesor:</strong> 0.90 mm se encuentra dentro del rango legal [0.5 mm, 1.0 mm].
                 </li>
                 <li>
-                  <strong className="text-black">Proceso:</strong> Laminado en frío verificado mediante ensayo de tracción y acabado 2B.
+                  <strong className="text-[#0f172a]">Proceso:</strong> Laminado en frío verificado mediante acabado 2B.
                 </li>
                 <li>
-                  <strong className="text-black">Química:</strong> Cr 18.20% y Ni 8.10% cumplen taxativamente definición de acero inoxidable.
-                </li>
-              </ul>
-            </div>
-
-            {/* B. Citas del Documento de Origen */}
-            <div className="p-4 bg-white border border-black/[0.12] rounded-[10px] space-y-2">
-              <span className="text-xs font-bold text-black block">
-                Citas Textuales Extraídas de la Ficha:
-              </span>
-              <ul className="text-xs text-black/[0.7] space-y-1.5 list-disc pl-4 font-mono leading-normal">
-                <li>«ACERO INOXIDABLE AUSTENÍTICO (AISI 304 / UNS S30400)»</li>
-                <li>«Composición: Cr 18.20% • Ni 8.10% • C 0.07%»</li>
-                <li>«Espesor calibrado: 0.90 mm • Ancho: 1,219 mm»</li>
-                <li>«Forma: Producto plano enrollado (bobina / coil)»</li>
-              </ul>
-            </div>
-
-            {/* C. Notas Legales Aplicadas */}
-            <div className="p-4 bg-white border border-black/[0.12] rounded-[10px] space-y-2">
-              <span className="text-xs font-bold text-black block">
-                Notas Legales de la Nomenclatura:
-              </span>
-              <ul className="text-xs text-black/[0.7] space-y-1.5 list-disc pl-4 leading-normal">
-                <li>
-                  <strong className="text-black">Nota 1(d) del Cap. 72:</strong> Clasificación como acero inoxidable por contenido de cromo superior al 10.5% en peso.
-                </li>
-                <li>
-                  <strong className="text-black">Nota 1(k) del Cap. 72:</strong> Definición de productos laminados planos enrollados en espiras superpuestas.
-                </li>
-                <li>
-                  <strong className="text-black">Reglas Generales 1 y 6:</strong> Determinación formal por texto de partida y subpartida de 6 dígitos.
+                  <strong className="text-[#0f172a]">Química:</strong> Cr 18.20% y Ni 8.10% cumplen definición de acero inoxidable.
                 </li>
               </ul>
             </div>
 
-            {/* D. Regulaciones y Gravámenes Aplicables */}
-            <div className="p-4 bg-white border border-black/[0.12] rounded-[10px] space-y-2">
-              <span className="text-xs font-bold text-black block">
-                Régimen Arancelario y Regulaciones:
+            {/* Notas Legales */}
+            <div className="p-4 bg-white border border-[#e2e8f0] rounded-xl space-y-2">
+              <span className="text-xs font-semibold text-[#0f172a] block">
+                Notas Legales de Nomenclatura:
               </span>
-              <div className="space-y-1.5 text-xs text-black/[0.8]">
-                <div className="flex justify-between py-1 border-b border-black/[0.06]">
-                  <span className="text-black/[0.6]">Arancel General (IGI):</span>
-                  <span className="font-mono font-bold text-black">25.0%</span>
-                </div>
-                <div className="flex justify-between py-1 border-b border-black/[0.06]">
-                  <span className="text-black/[0.6]">Unidad de Medida de Tarifa (UMT):</span>
-                  <span className="font-mono font-semibold text-black">Kilogramo (Kg)</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span className="text-black/[0.6]">Regulación No Arancelaria:</span>
-                  <span className="text-emerald-800 font-medium">Aviso Automático Siderúrgico</span>
-                </div>
-              </div>
+              <ul className="text-xs text-[#64748b] space-y-1.5 list-disc pl-4 leading-normal">
+                <li>
+                  <strong className="text-[#0f172a]">Nota 1(d) Cap. 72:</strong> Definición de acero inoxidable por contenido de cromo.
+                </li>
+                <li>
+                  <strong className="text-[#0f172a]">Nota 1(k) Cap. 72:</strong> Definición de productos laminados planos enrollados.
+                </li>
+                <li>
+                  <strong className="text-[#0f172a]">Reglas Generales 1 y 6:</strong> Determinación formal por texto de partida y subpartida.
+                </li>
+              </ul>
             </div>
-
           </div>
         </div>
 
-        {/* ========================================================================= */}
-        {/* 3. RANKING DE ALTERNATIVAS EVALUADAS (TOP 2 Y 3 DESCARTADAS) */}
-        {/* ========================================================================= */}
+        {/* Alternativas Descartadas */}
         <div className="space-y-3">
-          <div className="flex items-center justify-between pb-2 border-b border-black/[0.08]">
-            <h3 className="text-xs font-bold text-black uppercase tracking-wider">
+          <div className="flex items-center justify-between pb-2 border-b border-[#e2e8f0]">
+            <h3 className="text-xs font-semibold text-[#475569] uppercase tracking-wider">
               Alternativas Evaluadas y Motivo de Descarte
             </h3>
-            <span className="text-[11px] text-black/[0.4]">Opciones subordinadas</span>
+            <span className="text-[11px] text-[#94a3b8]">Opciones secundarias</span>
           </div>
 
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             {ALTERNATIVAS_DESCARTADAS.map((alt) => (
               <div
                 key={alt.fraccion}
-                className="p-3 bg-black/[0.01] border border-black/[0.12] rounded-[10px] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5"
+                className="p-3 bg-[#f8fafc] border border-[#e2e8f0] rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5"
               >
                 <div className="flex items-start sm:items-center gap-3">
-                  <span className="text-[10px] font-mono font-bold text-black/[0.5] border border-black/[0.15] bg-white px-2 py-0.5 rounded-[4px]">
+                  <span className="text-[10px] font-mono font-bold text-[#64748b] border border-[#cbd5e1] bg-white px-2 py-0.5 rounded">
                     {alt.posicion}
                   </span>
                   <div>
-                    <span className="text-xs font-mono font-bold text-black block">
+                    <span className="text-xs font-mono font-semibold text-[#0f172a] block">
                       {alt.fraccion}
                     </span>
-                    <span className="text-[11px] text-black/[0.6] mt-0.5 block leading-tight">
-                      <strong className="text-rose-800 font-semibold">Motivo de descarte: </strong>
+                    <span className="text-[11px] text-[#64748b] mt-0.5 block leading-tight">
+                      <strong className="text-[#e11d48] font-medium">Motivo: </strong>
                       {alt.motivoDescarte}
                     </span>
                   </div>
                 </div>
 
-                <div className="text-right flex-shrink-0 self-end sm:self-center">
-                  <span className="text-[10px] font-mono text-black/[0.5] block">Confianza</span>
-                  <span className="text-xs font-mono font-semibold text-black">
+                <div className="text-right shrink-0 self-end sm:self-center">
+                  <span className="text-xs font-mono text-[#64748b]">
                     {(alt.confianza * 100).toFixed(1)}%
                   </span>
                 </div>
@@ -237,52 +198,50 @@ export const RankingView: React.FC<RankingViewProps> = ({
           </div>
         </div>
 
-        {/* ========================================================================= */}
-        {/* 4. MODALIDAD DE CORRECCIÓN MANUAL (DESPLEGABLE) */}
-        {/* ========================================================================= */}
+        {/* Modalidad de Corrección Manual */}
         {modoCorreccion && (
           <form
             onSubmit={handleConfirmarCorreccion}
-            className="p-5 bg-amber-50/[0.5] border border-amber-300 rounded-[10px] space-y-4 animate-in fade-in duration-150"
+            className="p-5 bg-[#fffbeb] border border-[#fde68a] rounded-xl space-y-4"
           >
             <div>
-              <span className="text-xs font-bold text-amber-950 uppercase tracking-wide block">
+              <span className="text-xs font-bold text-[#92400e] uppercase tracking-wide block">
                 Discrepancia de Clasificación Manual
               </span>
-              <p className="text-xs text-amber-900 mt-0.5">
-                Para apartarse de la recomendación algorítmica, es mandatorio fundamentar el motivo técnico en el registro de auditoría.
+              <p className="text-xs text-[#78350f] mt-0.5">
+                Para apartarse de la recomendación algorítmica, fundamente el motivo técnico en el expediente.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-black mb-1" htmlFor="fraccion-corregida">
-                  Fracción arancelaria que desea asignar:
+                <label className="block text-xs font-semibold text-[#0f172a] mb-1" htmlFor="fraccion-corregida">
+                  Fracción arancelaria asignada:
                 </label>
                 <input
                   type="text"
                   id="fraccion-corregida"
                   value={fraccionManual}
                   onChange={(e) => setFraccionManual(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-black/[0.15] rounded-[10px] font-mono text-xs font-bold text-black focus:outline-none focus:border-[#2563eb]"
+                  className="w-full px-3 py-2 bg-white border border-[#cbd5e1] rounded-lg font-mono text-xs font-bold text-[#0f172a] focus:outline-none focus:border-[#dc2626]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-black mb-1" htmlFor="norma-fundamento">
+                <label className="block text-xs font-semibold text-[#0f172a] mb-1" htmlFor="norma-fundamento">
                   Precedente o regla de apoyo:
                 </label>
                 <input
                   type="text"
                   id="norma-fundamento"
                   defaultValue="Criterio Vinculante Clasificatorio 2025-08"
-                  className="w-full px-3 py-2 bg-white border border-black/[0.15] rounded-[10px] text-xs text-black focus:outline-none focus:border-[#2563eb]"
+                  className="w-full px-3 py-2 bg-white border border-[#cbd5e1] rounded-lg text-xs text-[#0f172a] focus:outline-none focus:border-[#dc2626]"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-black mb-1" htmlFor="motivo-tecnico">
+              <label className="block text-xs font-semibold text-[#0f172a] mb-1" htmlFor="motivo-tecnico">
                 Motivo u observación técnica requerida:
               </label>
               <textarea
@@ -290,11 +249,11 @@ export const RankingView: React.FC<RankingViewProps> = ({
                 rows={2}
                 value={motivoManual}
                 onChange={(e) => setMotivoManual(e.target.value)}
-                placeholder="Explique detalladamente la razón técnica o legal que desestima la fracción sugerida..."
-                className="w-full px-3 py-2 bg-white border border-black/[0.15] rounded-[10px] text-xs text-black placeholder:text-black/[0.4] focus:outline-none focus:border-[#2563eb]"
+                placeholder="Explique la razón técnica o legal..."
+                className="w-full px-3 py-2 bg-white border border-[#cbd5e1] rounded-lg text-xs text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-[#dc2626]"
               />
               {errorValidacion && (
-                <span className="text-[11px] text-rose-800 font-medium block mt-1">
+                <span className="text-[11px] text-[#e11d48] font-medium block mt-1">
                   {errorValidacion}
                 </span>
               )}
@@ -304,13 +263,13 @@ export const RankingView: React.FC<RankingViewProps> = ({
               <button
                 type="button"
                 onClick={() => setModoCorreccion(false)}
-                className="px-4 py-2 border border-black/[0.15] text-xs text-black rounded-[8px] hover:bg-white"
+                className="px-3.5 py-1.5 border border-[#cbd5e1] text-xs text-[#475569] rounded-lg hover:bg-white cursor-pointer"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-amber-700 hover:bg-amber-800 text-white text-xs font-semibold rounded-[8px] transition-colors"
+                className="px-3.5 py-1.5 bg-[#b45309] hover:bg-[#92400e] text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer"
               >
                 Confirmar Asignación Manual
               </button>
@@ -318,14 +277,12 @@ export const RankingView: React.FC<RankingViewProps> = ({
           </form>
         )}
 
-        {/* ========================================================================= */}
-        {/* 5. ACCIONES DEL CLASIFICADOR */}
-        {/* ========================================================================= */}
-        <div className="pt-4 border-t border-black/[0.08] flex flex-col sm:flex-row items-center justify-between gap-3">
+        {/* Acciones */}
+        <div className="pt-4 border-t border-[#e2e8f0] flex flex-col sm:flex-row items-center justify-between gap-3">
           <button
             type="button"
             onClick={onVolver}
-            className="w-full sm:w-auto px-4 py-3 border border-black/[0.12] hover:border-black/[0.3] text-black text-xs font-medium rounded-[10px] transition-colors"
+            className="w-full sm:w-auto px-4 py-2.5 border border-[#e2e8f0] hover:bg-[#f8fafc] text-[#64748b] text-xs font-medium rounded-lg transition-colors cursor-pointer"
           >
             ← Volver a Desambiguación
           </button>
@@ -335,18 +292,18 @@ export const RankingView: React.FC<RankingViewProps> = ({
               <button
                 type="button"
                 onClick={() => setModoCorreccion(true)}
-                className="w-full sm:w-auto px-4 py-3 border border-black/[0.15] hover:border-black/[0.3] text-black text-xs font-semibold rounded-[10px] bg-white transition-colors"
+                className="w-full sm:w-auto px-4 py-2.5 border border-[#e2e8f0] hover:bg-[#f8fafc] text-[#475569] text-xs font-medium rounded-lg bg-white transition-colors cursor-pointer"
               >
-                Elegir otra fracción o corregir manualmente
+                Corregir manualmente
               </button>
             )}
 
             <button
               type="button"
               onClick={handleAprobarSugerida}
-              className="w-full sm:w-auto px-6 py-3 bg-[#2563eb] text-white font-semibold text-xs sm:text-sm rounded-[10px] hover:opacity-90 transition-opacity"
+              className="w-full sm:w-auto px-5 py-2.5 bg-[#dc2626] text-white font-medium text-xs sm:text-sm rounded-lg hover:bg-[#b91c1c] transition-colors cursor-pointer shadow-sm"
             >
-              Aprobar Fracción Sugerida y Generar Dictamen →
+              Aprobar Fracción y Continuar a Auditoría →
             </button>
           </div>
         </div>

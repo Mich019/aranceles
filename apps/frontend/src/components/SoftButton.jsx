@@ -13,7 +13,7 @@ export default function SoftButton({
   className = '',
 }) {
   const variantStyles = {
-    primary: 'bg-[#2563eb] text-white shadow-none hover:opacity-90 font-semibold text-sm py-2.5 px-4 rounded-xl',
+    primary: 'bg-[#dc2626] text-white shadow-none hover:opacity-90 font-semibold text-sm py-2.5 px-4 rounded-xl',
     secondary: 'bg-white border border-slate-200 text-slate-700 shadow-none hover:bg-slate-50 font-semibold text-sm py-2.5 px-4 rounded-xl',
   };
 
