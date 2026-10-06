@@ -24,6 +24,7 @@ export interface AppShellProps {
   layaActivo: boolean;
   setLayaActivo: React.Dispatch<React.SetStateAction<boolean>>;
   datosSimulados: DatosSimulados;
+  usuarioActivo?: { nombre: string; cargo: string; correo: string } | null;
   onReset?: () => void;
   children: React.ReactNode;
 }
@@ -47,6 +48,7 @@ export const AppShell: React.FC<AppShellProps> = ({
   layaActivo,
   setLayaActivo,
   datosSimulados,
+  usuarioActivo,
   onReset,
   children,
 }) => {
@@ -72,113 +74,117 @@ export const AppShell: React.FC<AppShellProps> = ({
             </div>
           </div>
 
-          {/* Centro: Toggles Físicos Sobrios de Asistentes IA */}
-          <div className="hidden lg:flex items-center gap-3">
-            {/* Toggle Qwen 2.5 */}
-            <div className="flex items-center gap-2.5 px-2 py-1.5">
+          {/* Centro: Toggles de Asistentes IA (Solo visibles con sesión iniciada) */}
+          {pasoActual > 0 && (
+            <div className="hidden lg:flex items-center gap-3">
+              {/* Toggle Qwen 2.5 */}
+              <div className="flex items-center gap-2.5 px-2 py-1.5">
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={qwenActivo}
+                  onClick={() => setQwenActivo((prev) => !prev)}
+                  className={`w-9 h-5 rounded-full transition-colors relative border flex items-center ${
+                    qwenActivo
+                      ? 'bg-[#2563eb] border-[#2563eb]'
+                      : 'bg-black/[0.12] border-black/[0.2]'
+                  }`}
+                  title="Activar o desactivar normalización ortográfica"
+                >
+                  <span
+                    className={`w-3.5 h-3.5 bg-white rounded-full transition-transform transform shadow-none block ${
+                      qwenActivo ? 'translate-x-4' : 'translate-x-0.5'
+                    }`}
+                  />
+                </button>
+                <div className="text-left">
+                  <div className="text-xs font-semibold text-black leading-tight">
+                    Normalización ortográfica (Qwen 2.5)
+                  </div>
+                  <div className="text-[11px] text-black/[0.4] leading-tight">
+                    {qwenActivo ? 'Corrige tipografía y términos' : 'Desactivado'}
+                  </div>
+                </div>
+              </div>
+
+              {/* Toggle Laya */}
+              <div className="flex items-center gap-2.5 px-2 py-1.5">
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={layaActivo}
+                  onClick={() => setLayaActivo((prev) => !prev)}
+                  className={`w-9 h-5 rounded-full transition-colors relative border flex items-center ${
+                    layaActivo
+                      ? 'bg-[#2563eb] border-[#2563eb]'
+                      : 'bg-black/[0.12] border-black/[0.2]'
+                  }`}
+                  title="Activar o desactivar asistencia cualitativa"
+                >
+                  <span
+                    className={`w-3.5 h-3.5 bg-white rounded-full transition-transform transform shadow-none block ${
+                      layaActivo ? 'translate-x-4' : 'translate-x-0.5'
+                    }`}
+                  />
+                </button>
+                <div className="text-left">
+                  <div className="text-xs font-semibold text-black leading-tight">
+                    Asistencia cualitativa (Laya)
+                  </div>
+                  <div className="text-[11px] text-black/[0.4] leading-tight">
+                    {layaActivo ? 'Sugiere opciones cerradas' : 'Desactivado'}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Lado Derecho: Funcionario Autenticado + Cerrar sesión (Solo con sesión iniciada) */}
+          {pasoActual > 0 && (
+            <div className="flex items-center gap-3">
+              <div className="text-right">
+                <div className="text-sm font-semibold text-black leading-tight">
+                  {usuarioActivo?.nombre || 'Diego Ramírez'}
+                </div>
+                <div className="text-xs text-black/[0.7] leading-tight">
+                  {usuarioActivo?.cargo || 'Clasificador Aduanal'} • Aduana de Nuevo Laredo
+                </div>
+              </div>
+
               <button
                 type="button"
-                role="switch"
-                aria-checked={qwenActivo}
-                onClick={() => setQwenActivo((prev) => !prev)}
-                className={`w-9 h-5 rounded-full transition-colors relative border flex items-center ${
-                  qwenActivo
-                    ? 'bg-[#2563eb] border-[#2563eb]'
-                    : 'bg-black/[0.12] border-black/[0.2]'
-                }`}
-                title="Activar o desactivar normalización ortográfica"
+                onClick={onReset ? onReset : () => setPasoActual(0)}
+                className="text-xs font-medium text-black/[0.6] hover:text-rose-800 hover:underline px-2 py-1 rounded-[10px] transition-colors"
               >
-                <span
-                  className={`w-3.5 h-3.5 bg-white rounded-full transition-transform transform shadow-none block ${
-                    qwenActivo ? 'translate-x-4' : 'translate-x-0.5'
-                  }`}
-                />
+                Cerrar sesión
               </button>
-              <div className="text-left">
-                <div className="text-xs font-semibold text-black leading-tight">
-                  Normalización ortográfica (Qwen 2.5)
-                </div>
-                <div className="text-[11px] text-black/[0.4] leading-tight">
-                  {qwenActivo ? 'Corrige tipografía y términos' : 'Desactivado'}
-                </div>
-              </div>
             </div>
+          )}
+        </div>
 
-            {/* Toggle Laya */}
-            <div className="flex items-center gap-2.5 px-2 py-1.5">
-              <button
-                type="button"
-                role="switch"
-                aria-checked={layaActivo}
-                onClick={() => setLayaActivo((prev) => !prev)}
-                className={`w-9 h-5 rounded-full transition-colors relative border flex items-center ${
-                  layaActivo
-                    ? 'bg-[#2563eb] border-[#2563eb]'
-                    : 'bg-black/[0.12] border-black/[0.2]'
-                }`}
-                title="Activar o desactivar asistencia cualitativa"
-              >
-                <span
-                  className={`w-3.5 h-3.5 bg-white rounded-full transition-transform transform shadow-none block ${
-                    layaActivo ? 'translate-x-4' : 'translate-x-0.5'
-                  }`}
-                />
-              </button>
-              <div className="text-left">
-                <div className="text-xs font-semibold text-black leading-tight">
-                  Asistencia cualitativa (Laya)
-                </div>
-                <div className="text-[11px] text-black/[0.4] leading-tight">
-                  {layaActivo ? 'Sugiere opciones cerradas' : 'Desactivado'}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Lado Derecho: Gafete Tangible del Funcionario + Acción */}
-          <div className="flex items-center gap-3">
-            {/* Gafete institucional de acreditación */}
-            <div className="text-right">
-              <div className="text-sm font-semibold text-black leading-tight">
-                Diego Ramírez
-              </div>
-              <div className="text-xs text-black/[0.7] leading-tight">
-                Clasificador Aduanal • Aduana de Nuevo Laredo
-              </div>
-            </div>
-
-            {/* Botón de texto simple para reiniciar o salir */}
+        {/* Toggles móviles (visibles solo con sesión iniciada en pantallas pequeñas) */}
+        {pasoActual > 0 && (
+          <div className="lg:hidden border-t border-black/[0.06] px-4 py-2 flex flex-wrap gap-2 justify-center bg-black/[0.01]">
             <button
               type="button"
-              onClick={onReset ? onReset : () => setPasoActual(0)}
-              className="text-xs font-medium text-black/[0.6] hover:text-rose-800 hover:underline px-2 py-1 rounded-[10px] transition-colors"
+              onClick={() => setQwenActivo((prev) => !prev)}
+              className={`text-xs px-2.5 py-2 rounded-[10px] ${
+                qwenActivo ? 'bg-[#2563eb]/[0.08] text-[#2563eb] font-semibold' : 'text-black/[0.4]'
+              }`}
             >
-              {pasoActual === 0 ? 'Iniciar sesión' : 'Cerrar sesión'}
+              Qwen 2.5: {qwenActivo ? 'Activo' : 'Inactivo'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setLayaActivo((prev) => !prev)}
+              className={`text-xs px-2.5 py-2 rounded-[10px] ${
+                layaActivo ? 'bg-[#2563eb]/[0.08] text-[#2563eb] font-semibold' : 'text-black/[0.4]'
+              }`}
+            >
+              Laya: {layaActivo ? 'Activo' : 'Inactivo'}
             </button>
           </div>
-        </div>
-
-        {/* Toggles móviles (visibles solo en pantallas pequeñas) */}
-        <div className="lg:hidden border-t border-black/[0.06] px-4 py-2 flex flex-wrap gap-2 justify-center bg-black/[0.01]">
-          <button
-            type="button"
-            onClick={() => setQwenActivo((prev) => !prev)}
-            className={`text-xs px-2.5 py-2 rounded-[10px] ${
-              qwenActivo ? 'bg-[#2563eb]/[0.08] text-[#2563eb] font-semibold' : 'text-black/[0.4]'
-            }`}
-          >
-            Qwen 2.5: {qwenActivo ? 'Activo' : 'Inactivo'}
-          </button>
-          <button
-            type="button"
-            onClick={() => setLayaActivo((prev) => !prev)}
-            className={`text-xs px-2.5 py-2 rounded-[10px] ${
-              layaActivo ? 'bg-[#2563eb]/[0.08] text-[#2563eb] font-semibold' : 'text-black/[0.4]'
-            }`}
-          >
-            Laya: {layaActivo ? 'Activo' : 'Inactivo'}
-          </button>
-        </div>
+        )}
       </header>
 
       {/* 2. BARRA DE ETAPAS LINEAL (SIN NOMBRES DE MÓDULO NI RF-XXX) */}

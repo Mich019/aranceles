@@ -17,6 +17,7 @@ export default function App() {
   const [layaActivo, setLayaActivo] = useState<boolean>(true);
   const [evidenciaHovered, setEvidenciaHovered] = useState<string | null>(null);
   const [observacionAuditoria, setObservacionAuditoria] = useState<ObservacionAuditoria | null>(null);
+  const [usuarioActivo, setUsuarioActivo] = useState<{ nombre: string; cargo: string; correo: string } | null>(null);
 
   // Datos simulados de la ficha técnica de acero
   const [datosSimulados, setDatosSimulados] = useState<DatosSimulados>({
@@ -38,6 +39,7 @@ export default function App() {
     setPasoActual(0);
     setTipoDocumento('ficha');
     setObservacionAuditoria(null);
+    setUsuarioActivo(null);
   };
 
   return (
@@ -51,12 +53,14 @@ export default function App() {
       layaActivo={layaActivo}
       setLayaActivo={setLayaActivo}
       datosSimulados={datosSimulados}
+      usuarioActivo={usuarioActivo}
       onReset={reiniciarFlujo}
     >
       {/* VISTA 0: INICIO DE SESIÓN */}
       {pasoActual === 0 && (
         <LoginView
-          onSuccess={() => {
+          onSuccess={(perfil) => {
+            setUsuarioActivo(perfil);
             setPasoActual(1);
           }}
         />
